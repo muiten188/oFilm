@@ -14,6 +14,7 @@
     "react-native": "0.43.3",
     "react-native-marquee-label": "^1.0.0",
     "react-native-modal-dropdown": "^0.4.2",
+    "react-native-orientation": "yamill/react-native-orientation",
     "react-native-router-flux": "git:github.com/itinance/react-native-router-flux#fc1b8261144fe5f3132ac4940dd794ac06e9f351",
     "react-native-slider": "^0.9.1",
     "react-native-vector-icons": "^4.0.1",
