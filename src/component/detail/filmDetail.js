@@ -13,6 +13,7 @@ import {
   Platform,
   ToastAndroid
 } from 'react-native';
+import Orientation from 'react-native-orientation';
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 class FilmDetail extends Component{
   constructor(props){
@@ -25,10 +26,11 @@ class FilmDetail extends Component{
   back(props){
     props.navigator.pop();
   }
+  
   componentDidMount() {
       if (Platform.OS == "android") {
         BackAndroid.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
-     }
+      }
    }
   componentWillUnmount() {
      if (Platform.OS == "android") {

@@ -12,11 +12,17 @@ import {
   Button,
   RefreshControl
 } from 'react-native';
+
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 export default class index extends Component{
   constructor(props){
     super(props);
   }
+
+  componentDidMount() {
+
+  }
+
   componentWillMount() {
     const { getListFilm } = this.props.listFilmActions;
     getListFilm();
