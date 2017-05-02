@@ -9,6 +9,7 @@
   "dependencies": {
     "@remobile/react-native-marquee": "^1.0.1",
     "install": "^0.8.8",
+    "lodash": "^4.17.4",
     "npm": "^4.5.0",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.3",

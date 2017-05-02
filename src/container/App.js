@@ -26,7 +26,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <RootRouter name="asda" />
+        <RootRouter />
       </Provider>
     );
   }

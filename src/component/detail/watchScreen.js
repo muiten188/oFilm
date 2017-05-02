@@ -4,6 +4,7 @@ import {
   Navigator,
   Text,
   View,
+  StatusBar,
   ListView,
   ScrollView,
   Dimensions,
@@ -14,7 +15,7 @@ import {
   Platform,
   ToastAndroid
 } from 'react-native';
-import FilmPlayer from '../../container/filmPlayer';
+import FilmPlayer from '../../general_Component/filmPlayer/filmPlayer';
 import Orientation from 'react-native-orientation';
 class watch extends Component{
   constructor(props){
@@ -24,15 +25,6 @@ class watch extends Component{
       videoWidth:width,
       videoHeight:height
     }
-  }
-  componentWillMount() {
-    var initial = Orientation.getInitialOrientation();
-    const { width , height } = Dimensions.get('window');
-        if (initial === 'PORTRAIT') {
-          this.reSetWindowSizeState(width, 230);
-        } else {
-          this.reSetWindowSizeState(width, height);
-        }
   }
   reSetWindowSizeState(width, height){
     this.setState({
@@ -52,6 +44,13 @@ class watch extends Component{
       if (Platform.OS == "android") {
       //  BackAndroid.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
      }
+     var initial = Orientation.getInitialOrientation();
+     const { width , height } = Dimensions.get('window');
+         if (initial === 'PORTRAIT') {
+           this.reSetWindowSizeState(width, 230);
+         } else {
+           this.reSetWindowSizeState(width, height);
+         }
      Orientation.addOrientationListener(this._orientationDidChange.bind(this));
   }
   componentWillUnmount() {
@@ -61,10 +60,17 @@ class watch extends Component{
    }
 
    render(){
+     console.log('width:'+this.state.videoWidth);
+     console.log('heigt:'+this.state.videoHeight);
      const{episode, filmDetail}=this.props;
      return(
        <View style={{flex:1,flexDirection: 'column'}}>
-          <FilmPlayer paused={true} videoWidth={this.state.videoWidth} videoHeight={this.state.videoHeight}/>
+         <StatusBar
+          hidden={true}
+          showHideTransition={'fade'}
+          animated={true}
+        />
+          <FilmPlayer title="phim14.net" source={require("../../video/clip.mp4")}/>
        </View>
      )
    }
