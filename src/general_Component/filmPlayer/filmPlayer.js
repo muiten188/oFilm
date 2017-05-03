@@ -28,7 +28,7 @@ class FilmPlayer extends Component {
       rate: this.props.rate || 1,
       // Controls
       isFullscreen: isFullscreen,
-      showTimeRemaining: true,
+      showTimeRemaining: false,
       volumeTrackWidth: 0,
       lastScreenPress: 0,
       volumeFillWidth: 0,
@@ -412,7 +412,7 @@ class FilmPlayer extends Component {
       const time = this.state.duration - this.state.currentTime;
       return `-${this.formatTime(time)}`;
     }
-    return `${this.formatTime(this.state.currentTime)}`;
+    return `${this.formatTime(this.state.currentTime)}/${this.formatTime(this.state.duration)}`;
   }
 
   /**
@@ -762,10 +762,10 @@ class FilmPlayer extends Component {
           ]}>
           <View style={styles.controls.topControlGroup}>
             {this.renderBack()}
-            <View style={styles.controls.pullRight}>
-              {this.renderVolume()}
+            {this.renderTitle()}
+            {/*<View style={styles.controls.pullRight}>
               {this.renderFullscreen()}
-            </View>
+            </View>*/}
           </View>
         </Image>
       </Animated.View>
@@ -841,11 +841,11 @@ class FilmPlayer extends Component {
       ]}>
         <Image
           source={require('./assets/img/bottom-vignette.png')}
-          style={[styles.controls.column, styles.controls.vignette,
-          ]}>
+          style={[styles.controls.column, styles.controls.vignette]}>
           <View style={[
+            styles.controls.row,
             styles.player.container,
-            styles.controls.seekbar
+            { paddingTop: 15, paddingBottom: 15 }
           ]}>
             {this.renderSeekbar()}
           </View>
@@ -854,8 +854,8 @@ class FilmPlayer extends Component {
             styles.controls.bottomControlGroup
           ]}>
             {this.renderPlayPause()}
-            {this.renderTitle()}
             {this.renderTimer()}
+            {this.renderFullscreen()}
           </View>
         </Image>
       </Animated.View>
@@ -877,7 +877,7 @@ class FilmPlayer extends Component {
           styles.seek.fill,
           {
             width: this.state.seekerFillWidth,
-            backgroundColor: this.props.seekColor || '#FFF'
+            backgroundColor: this.props.seekColor || '#f12b24'
           }
         ]}>
           <View
@@ -891,7 +891,7 @@ class FilmPlayer extends Component {
           >
             <View style={[
               styles.seek.circle,
-              { backgroundColor: this.props.seekColor || '#FFF' }]}
+              { backgroundColor: this.props.seekColor || '#f12b24' }]}
             />
           </View>
         </View>
@@ -1026,199 +1026,202 @@ class FilmPlayer extends Component {
     )
   }
 }
- const styles = {
-    player: StyleSheet.create({
-        container: {
-            flex: 1,
-            alignSelf: 'stretch',
-            justifyContent: 'space-between',
-        },
-        video: {
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-        },
-    }),
-    error: StyleSheet.create({
-        container: {
-            backgroundColor: 'rgba( 0, 0, 0, 0.5 )',
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        icon: {
-            marginBottom: 16,
-        },
-        text: {
-            backgroundColor: 'transparent',
-            color: '#f27474'
-        },
-    }),
-    loader: StyleSheet.create({
-        container: {
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-    }),
-    controls: StyleSheet.create({
-        row: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: null,
-            width: null,
-        },
-        column: {
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: null,
-            width: null,
-        },
-        vignette: {
-            resizeMode: 'stretch',
-        },
-        control: {
-            padding: 16,
-        },
-        text: {
-            backgroundColor: 'transparent',
-            color: '#FFF',
-            fontSize: 16,
-            textAlign: 'center',
-        },
-        pullRight: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        top: {
-            flex: 1,
-            alignItems: 'stretch',
-            justifyContent: 'flex-start',
-        },
-        bottom: {
-            alignItems: 'stretch',
-            flex: 2,
-            justifyContent: 'flex-end',
-        },
-        seekbar: {
-            alignSelf: 'stretch',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 100,
-            marginTop: 24,
-            marginBottom: 0,
-        },
-        topControlGroup: {
-            alignSelf: 'stretch',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            width: null,
-            margin: 12,
-            marginBottom: 18,
-        },
-        bottomControlGroup: {
-            alignSelf: 'stretch',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            marginLeft: 12,
-            marginRight: 12,
-            marginBottom: 0,
-        },
-        volume: {
-            flexDirection: 'row',
-        },
-        fullscreen: {
-            flexDirection: 'row',
-        },
-        playPause: {
-            width: 80,
-        },
-        title: {
-            alignItems: 'center',
-            flex: 0.6,
-            flexDirection: 'column',
-            padding: 0,
-        },
-        titleText: {
-            textAlign: 'center',
-        },
-        timer: {
-            width: 80,
-        },
-        timerText: {
-            backgroundColor: 'transparent',
-            color: '#FFF',
-            fontSize: 11,
-            textAlign: 'right',
-        },
-    }),
-    seek: StyleSheet.create({
-        track: {
-            alignSelf: 'stretch',
-            justifyContent: 'center',
-            backgroundColor: '#333',
-            height: 4,
-            marginLeft: 28,
-            marginRight: 28,
-        },
-        fill: {
-            alignSelf: 'flex-start',
-            height: 2,
-            width: 1,
-        },
-        handle: {
-            position: 'absolute',
-            marginTop: -21,
-            marginLeft: -24,
-            padding: 16,
-            paddingBottom: 4,
-        },
-        circle: {
-            borderRadius: 20,
-            height: 12,
-            width: 12,
-        },
-    }),
-    volume: StyleSheet.create({
-        container: {
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            flexDirection: 'row',
-            height: 1,
-            marginLeft: 20,
-            marginRight: 20,
-            width: 150,
-        },
-        track: {
-            backgroundColor: '#333',
-            height: 1,
-            marginLeft: 7,
-        },
-        fill: {
-            backgroundColor: '#FFF',
-            height: 1,
-        },
-        handle: {
-            position: 'absolute',
-            marginTop: -24,
-            marginLeft: -24,
-            padding: 16,
-        }
-    })
+const styles = {
+  player: StyleSheet.create({
+    container: {
+      flex: 1,
+      alignSelf: 'stretch',
+      justifyContent: 'space-between',
+    },
+    video: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    },
+  }),
+  error: StyleSheet.create({
+    container: {
+      backgroundColor: 'rgba( 0, 0, 0, 0.5 )',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    icon: {
+      marginBottom: 16,
+    },
+    text: {
+      backgroundColor: 'transparent',
+      color: '#f27474'
+    },
+  }),
+  loader: StyleSheet.create({
+    container: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  }),
+  controls: StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      height: null,
+      width: null,
+    },
+    column: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      height: null,
+      width: null,
+    },
+    vignette: {
+      resizeMode: 'stretch',
+    },
+    control: {
+      padding: 16,
+    },
+    back:{
+      paddingRight:0,
+    },
+    text: {
+      backgroundColor: 'transparent',
+      color: '#FFF',
+      fontSize: 16,
+      textAlign: 'center',
+    },
+    pullRight: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    top: {
+      flex: 1,
+      alignItems: 'stretch',
+      justifyContent: 'flex-start',
+    },
+    bottom: {
+      alignItems: 'stretch',
+      flex: 2,
+      justifyContent: 'flex-end',
+    },
+    seekbar: {
+      alignSelf: 'stretch',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 100,
+      marginTop: 10,
+      marginBottom: 10,
+      backgroundColor: 'red',
+    },
+    topControlGroup: {
+      alignSelf: 'stretch',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      width: null,
+      margin: 12,
+      marginBottom: 18,
+    },
+    bottomControlGroup: {
+      alignSelf: 'stretch',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      marginLeft: 12,
+      marginRight: 12,
+      marginBottom: 0,
+    },
+    volume: {
+      flexDirection: 'row',
+    },
+    fullscreen: {
+      marginRight:10,
+        width:10
+    },
+    playPause: {
+      width: 80,
+    },
+    title: {
+      alignItems: 'center',
+      flex: 1,
+      padding: 0,
+    },
+    titleText: {
+      textAlign: 'left',
+    },
+    timer: {
+      
+    },
+    timerText: {
+      backgroundColor: 'transparent',
+      color: '#FFF',
+      fontSize: 11,
+      textAlign: 'left',
+    },
+  }),
+  seek: StyleSheet.create({
+    track: {
+      flex: 1,
+      height: 4,
+      marginLeft: 10,
+      marginRight: 10,
+      backgroundColor:'yellow'
+    },
+    fill: {
+      alignSelf: 'flex-start',
+      height: 15,
+      width: 1,
+    },
+    handle: {
+      position: 'absolute',
+      marginTop: -21,
+      marginLeft: -24,
+      padding: 16,
+      paddingBottom: 4,
+    },
+    circle: {
+      borderRadius: 20,
+      height: 12,
+      width: 12,
+    },
+  }),
+  volume: StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      flexDirection: 'row',
+      height: 1,
+      marginLeft: 20,
+      marginRight: 20,
+      width: 150,
+    },
+    track: {
+      backgroundColor: '#333',
+      height: 1,
+      marginLeft: 7,
+    },
+    fill: {
+      backgroundColor: '#FFF',
+      height: 1,
+    },
+    handle: {
+      position: 'absolute',
+      marginTop: -24,
+      marginLeft: -24,
+      padding: 16,
+    }
+  })
 };
 export default FilmPlayer;

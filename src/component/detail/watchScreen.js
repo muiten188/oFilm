@@ -70,7 +70,7 @@ class watch extends Component{
           showHideTransition={'fade'}
           animated={true}
         />
-          <FilmPlayer title="phim14.net" source={require("../../video/clip.mp4")}/>
+          <FilmPlayer title="phim14.net" source={{uri:'https://r7---sn-8pxuuxa-i5oe6.googlevideo.com/videoplayback?id=c813e9abd790186a&itag=22&source=webdrive&requiressl=yes&ttl=transient&pl=20&ei=isoJWYfLF43HqAWVurZ4&mime=video/mp4&lmt=1493691606283840&ip=116.111.125.185&ipbits=0&expire=1493828298&sparams=ei,expire,id,ip,ipbits,itag,lmt,mime,mm,mn,ms,mv,pl,requiressl,source,ttl&signature=3CF880954E0832F342B7C641B51256A7B22B525C.82EB20E21C9545BCAE17B5D5C92D5CAFA71F2131&key=cms1&app=explorer&cms_redirect=yes&mm=31&mn=sn-8pxuuxa-i5oe6&ms=au&mt=1493821646&mv=m'}}/>
        </View>
      )
    }
