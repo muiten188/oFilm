@@ -26,12 +26,17 @@ class watch extends Component{
       videoHeight:height
     }
   }
+  //method
   reSetWindowSizeState(width, height){
     this.setState({
       videoWidth:width,
       videoHeight:height
     })
   }
+  _handleBack() {
+       ToastAndroid.show('Back button is pressed', ToastAndroid.SHORT);
+       this.props.navigator.pop();
+   }
   _orientationDidChange(orientation) {
     const { width , height } = Dimensions.get('window');
     if (orientation == 'LANDSCAPE') {
@@ -40,6 +45,7 @@ class watch extends Component{
       this.reSetWindowSizeState(width, 230);
     }
   }
+  //component react
   componentDidMount() {
       if (Platform.OS == "android") {
       //  BackAndroid.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
@@ -70,7 +76,7 @@ class watch extends Component{
           showHideTransition={'fade'}
           animated={true}
         />
-          <FilmPlayer title="phim14.net" source={{uri:'https://r7---sn-8pxuuxa-i5oe6.googlevideo.com/videoplayback?id=c813e9abd790186a&itag=22&source=webdrive&requiressl=yes&ttl=transient&pl=20&ei=isoJWYfLF43HqAWVurZ4&mime=video/mp4&lmt=1493691606283840&ip=116.111.125.185&ipbits=0&expire=1493828298&sparams=ei,expire,id,ip,ipbits,itag,lmt,mime,mm,mn,ms,mv,pl,requiressl,source,ttl&signature=3CF880954E0832F342B7C641B51256A7B22B525C.82EB20E21C9545BCAE17B5D5C92D5CAFA71F2131&key=cms1&app=explorer&cms_redirect=yes&mm=31&mn=sn-8pxuuxa-i5oe6&ms=au&mt=1493821646&mv=m'}}/>
+          <FilmPlayer title="phim14.net" onBack={this._handleBack.bind(this)} source={{uri:'https://r7---sn-42u-i5oee.googlevideo.com/videoplayback?id=b2b78267a8f8b3ce&itag=22&source=webdrive&requiressl=yes&ttl=transient&pl=24&ei=ysYKWfu_BYrXqQXN07jQCQ&mime=video/mp4&lmt=1493432571913999&ip=42.112.212.2&ipbits=0&expire=1493892874&sparams=ei,expire,id,ip,ipbits,itag,lmt,mime,mm,mn,ms,mv,pcm2cms,pl,requiressl,source,ttl&signature=6E16B18E8462393EBEA48C69B7827B782BFFDCD5.569C34A7A938083534C3A7C884CF90E1539DE6A3&key=cms1&app=explorer&cms_redirect=yes&mm=31&mn=sn-42u-i5oee&ms=au&mt=1493885482&mv=m&pcm2cms=yes'}}/>
        </View>
      )
    }

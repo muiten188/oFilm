@@ -19,6 +19,7 @@ class FilmPlayer extends Component {
   constructor(props) {
     super(props);
     const isFullscreen = this.props.resizeMode === 'cover' || false;
+    this.prevTimeVideo=0;
     this.state = {
       // Video
       resizeMode: this.props.resizeMode || 'contain',
@@ -152,16 +153,18 @@ class FilmPlayer extends Component {
    *
    * @param {object} data The video meta data
    */
-  _onProgress(data = {}) {
-    let state = this.state;
-    state.currentTime = data.currentTime;
+  _onProgress(data = {}) { 
+    if(data.currentTime-this.prevTimeVideo>=1){
+       this.prevTimeVideo+=1;
+       let state = this.state;
+              state.currentTime = data.currentTime;
 
-    if (!state.seeking) {
-      const position = this.calculateSeekerPosition();
-      this.setSeekerPosition(position);
+              if (!state.seeking) {
+                const position = this.calculateSeekerPosition();
+                this.setSeekerPosition(position);
+              }
+              this.setState(state);
     }
-
-    this.setState(state);
   }
 
   /**
@@ -1147,11 +1150,12 @@ const styles = {
       flexDirection: 'row',
     },
     fullscreen: {
-      marginRight:10,
-        width:10
+      marginRight:15,
+      width:10
     },
     playPause: {
       width: 80,
+      marginBottom:10,
     },
     title: {
       alignItems: 'center',
