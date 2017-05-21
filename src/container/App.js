@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+  import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -8,14 +8,12 @@ import {
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
-import educers from '../Reducers/index';
+import reducers from '../reducers/index';
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+const store = createStoreWithMiddleware(reducers);
+import RootRouter from './root_router';
 
-const store = createStoreWithMiddleware(educers);
-
-import Grid from '../component/grid';
-import RootRouter from './rootRouter';
 export default class App extends Component {
   constructor(props) {
     super(props);

@@ -1,11 +1,10 @@
 export const DEFAULT = 'DEFAULT';
-
-export const LOGIN = 'LOGIN';
-export const CAPTURE = 'CAPTURE';
-export const CLOSE = 'CLOSE';
-
+//list film actions
 export const LIST_FILM_REFRESH = 'LIST_FILM_REFRESH';
 export const LIST_FILM = 'LIST_FILM';
-//detail action
+//detail actions
 export const WATCH = 'WATCH';
 export const FETCHFILMDETAIL='FETCHFILMDETAIL';
+export const RESETSTATE='RESETSTATE';
+//watch screen
+export const GETDIRECTLINKFILM='GETDIRECTLINKFILM';
