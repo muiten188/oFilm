@@ -10,7 +10,9 @@ import {
   Image,
   TouchableHighlight,
   Button,
-  RefreshControl
+  RefreshControl,
+  BackAndroid,
+  ToastAndroid
 } from 'react-native';
 import * as utility from "../../common/utility";
 
@@ -18,11 +20,22 @@ let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 export default class index extends Component {
   constructor(props) {
     super(props);
+    this._handleBackButton=this.handleBackButton.bind(this);
   }
 
   componentDidMount() {
+    BackAndroid.addEventListener('hardwareBackPress', this._handleBackButton);
     const { getListFilm } = this.props.listFilmActions;
     getListFilm();
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('hardwareBackPress', this._handleBackButton);
+  }
+
+  handleBackButton() {
+    ToastAndroid.show('Back button is pressed from list film', ToastAndroid.SHORT);
+    return true;
   }
 
   buildRow(oData) {

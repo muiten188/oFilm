@@ -27,7 +27,6 @@ export default function (state = initState, action = {}) {
     case types.RESETSTATE:
       return {
         ...state,
-        filmDetail: action.filmDetail,
         isLoading: initState.isLoading
       };
     default:

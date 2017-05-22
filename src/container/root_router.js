@@ -9,6 +9,9 @@ import {
   Navigator,
   Text,
   StatusBar,
+  Platform,
+  BackAndroid,
+  ToastAndroid
 } from 'react-native';
 import { Router, Route, Scene, Animations, TabBar } from 'react-native-router-flux';
 import ListFilm from '../component/listfilm/index';
@@ -23,13 +26,14 @@ class RootRouter extends Component {
   constructor(props) {
     super(props);
   }
+
   renderScene(route, navigator) {
-    var { state, actions } = this.props;
     var routeId = route.id;
     if (routeId === 'grid') {
       return (
         <ListFilm {...this.props}
-          navigator={navigator} />
+          navigator={navigator}
+          popCallBack={route.popCallBack} />
       );
     }
     if (routeId === 'FilmDetail') {
@@ -37,7 +41,8 @@ class RootRouter extends Component {
         <FilmDetail
           {...this.props}
           navigator={navigator}
-          film={route.oFilm} />
+          film={route.oFilm}
+          popCallBack={route.popCallBack} />
       );
     }
     if (routeId === 'WatchFilm') {
@@ -46,7 +51,8 @@ class RootRouter extends Component {
           {...this.props}
           navigator={navigator}
           episode={route.episode}
-          filmDetail={route.filmDetail} />
+          filmDetail={route.filmDetail}
+          popCallBack={route.popCallBack} />
       );
     }
   }
@@ -55,6 +61,7 @@ class RootRouter extends Component {
     return (
       <View style={{ flex: 1 }}>
         <Navigator
+          ref={(navigation) => { this._navigation = navigation; }}
           style={{ flex: 1 }}
           initialRoute={{ id: 'grid', name: 'grid' }}
           renderScene={(this.renderScene.bind(this))}

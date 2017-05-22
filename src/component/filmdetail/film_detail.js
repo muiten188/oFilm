@@ -30,32 +30,34 @@ class FilmDetail extends Component {
   }
 
   componentDidMount() {
-    if (Platform.OS == "android") {
-      BackAndroid.addEventListener('hardwareBackPress', this._handleBackButton);
-    }
+    BackAndroid.removeEventListener('hardwareBackPress');
+    BackAndroid.addEventListener('hardwareBackPress', this._handleBackButton);
     const { getFilmDetail } = this.props.filmDetailActions;
     getFilmDetail(this.props.film);
     utility.timerMark();
   }
 
   componentWillUnmount() {
-    if (Platform.OS == "android") {
-      BackAndroid.removeEventListener('hardwareBackPress', this._handleBackButton);
-    }
+    BackAndroid.removeEventListener('hardwareBackPress', this._handleBackButton);
   }
+
   handleBackButton() {
-    ToastAndroid.show('Back button is pressed', ToastAndroid.SHORT);
+    ToastAndroid.show('Back button is pressed from film detail', ToastAndroid.SHORT);
     this._back();
     return true;
   }
 
   watchFilm(_this, episode) {
     const { filmDetail } = this.props.filmDetailReducers;
-    if (Platform.OS == "android") {
-      BackAndroid.removeEventListener('hardwareBackPress', this._handleBackButton);
-      BackAndroid.addEventListener('hardwareBackPress', () => { return true });
-    }
-    _this.props.navigator.push({ id: "WatchFilm", episode: episode, filmDetail: filmDetail })
+    _this.props.navigator.push({
+      id: "WatchFilm",
+      episode: episode,
+      filmDetail: filmDetail,
+      popCallBack: () => {
+        const { getFilmDetail } = this.props.filmDetailActions;
+        getFilmDetail(this.props.film);
+      }
+    })
   }
 
   buildRowEpisode(episode) {
@@ -112,7 +114,7 @@ class FilmDetail extends Component {
             colors={['#ff0000', '#00ff00', '#0000ff']}
             progressBackgroundColor="#ffff00"
           />}>
-        <View style={{ flexDirection: 'column', flex: 1 }}>
+        <View pointerEvents={isLoading ? "none" : "auto"} style={{ flexDirection: 'column', flex: 1 }}>
           <Image style={[styles.fullWidthItem, styles.filmImage, styles.itemMargin]} source={{ uri: filmDetail ? filmDetail.Thumbnail : null }} />
           <Text style={[styles.fullWidthItem, styles.itemMargin]}>Phim: {filmDetail ? filmDetail.Name : null}</Text>
           <Text style={[styles.fullWidthItem, styles.itemMargin]}>Mô tả: {filmDetail ? filmDetail.Description : null}</Text>

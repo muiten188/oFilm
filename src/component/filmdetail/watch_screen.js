@@ -25,13 +25,23 @@ class watch extends Component {
       videoWidth: width,
       videoHeight: height
     }
+    this._handleBackButton = this.handleBackButton.bind(this);
   }
+
+  handleBackButton() {
+    ToastAndroid.show('Back button is pressed from watch screen', ToastAndroid.SHORT);
+    this.props.popCallBack();
+    this.props.navigator.pop();
+    return true;
+  }
+
   reSetWindowSizeState(width, height) {
     this.setState({
       videoWidth: width,
       videoHeight: height
     })
   }
+
   _orientationDidChange(orientation) {
     const { width, height } = Dimensions.get('window');
     if (orientation == 'LANDSCAPE') {
@@ -40,10 +50,10 @@ class watch extends Component {
       this.reSetWindowSizeState(width, 230);
     }
   }
+
   componentDidMount() {
-    if (Platform.OS == "android") {
-      //  BackAndroid.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
-    }
+    BackAndroid.removeEventListener('hardwareBackPress');
+    BackAndroid.addEventListener('hardwareBackPress', this._handleBackButton);
     var initial = Orientation.getInitialOrientation();
     const { width, height } = Dimensions.get('window');
     if (initial === 'PORTRAIT') {
@@ -57,11 +67,15 @@ class watch extends Component {
     getLinkFilm(this.props.episode);
   }
 
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('hardwareBackPress', this._handleBackButton);
+  }
+
   render() {
     const { episode, filmDetail } = this.props;
     const { oLinkFilm } = this.props.watchScreenReducers;
     let linkFilm;
-    if (oLinkFilm && oLinkFilm.link.length) {
+    if (oLinkFilm && typeof (oLinkFilm.link) == "object") {
       let oLink = oLinkFilm.link.filter(function (oLink) {
         return oLink.label == "Auto";
       })
@@ -69,7 +83,7 @@ class watch extends Component {
         linkFilm = oLink[0].link;
       }
     }
-    if (oLinkFilm && !oLinkFilm.link.length) {
+    if (oLinkFilm && typeof (oLinkFilm.link) == "string") {
       linkFilm = oLinkFilm.link;
     }
     return (
@@ -80,7 +94,7 @@ class watch extends Component {
           animated={true}
         />
         {
-          linkFilm ? <FilmPlayer title="phim14.net" source={{ uri: linkFilm }} navigator={this.props.navigator}/> : null
+          linkFilm ? <FilmPlayer title="phim14.net" source={{ uri: linkFilm }} navigator={this.props.navigator} /> : null
         }
       </View>
     )
