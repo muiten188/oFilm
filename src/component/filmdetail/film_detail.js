@@ -55,7 +55,7 @@ class FilmDetail extends Component {
       filmDetail: filmDetail,
       popCallBack: () => {
         const { getFilmDetail } = this.props.filmDetailActions;
-        getFilmDetail(this.props.film);
+        //getFilmDetail(this.props.film);
       }
     })
   }
