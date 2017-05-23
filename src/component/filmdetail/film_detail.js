@@ -25,8 +25,6 @@ class FilmDetail extends Component {
 
   _back() {
     this.props.navigator.pop();
-    const { resetState } = this.props.filmDetailActions;
-    resetState();
   }
 
   componentDidMount() {

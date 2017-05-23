@@ -27,9 +27,7 @@ export function filmDetail(oFilmDetail) {
 
 export function watch() {
   return {
-    type: types.WATCH,
-    id: 2,
-    message: "booboo"
+    type: types.WATCH
   };
 }
 export function resetState() {
