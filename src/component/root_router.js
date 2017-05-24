@@ -13,15 +13,10 @@ import {
   BackAndroid,
   ToastAndroid
 } from 'react-native';
-import { Router, Route, Scene, Animations, TabBar } from 'react-native-router-flux';
-import ListFilm from '../component/listfilm/index';
-import FilmDetail from '../component/filmdetail/film_detail';
-import WatchScreen from '../component/filmdetail/watch_screen';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as listFilmActions from '../actions/listfilm_actions';
-import * as filmDetailActions from '../actions/film_detail_actions';
-import * as watchScreenActions from '../actions/watch_screen_actions'
+import ListFilm from './listfilm/index';
+import FilmDetail from './filmdetail/film_detail';
+import WatchScreen from './filmdetail/watch_screen';
+
 class RootRouter extends Component {
   constructor(props) {
     super(props);
@@ -69,12 +64,4 @@ class RootRouter extends Component {
     );
   }
 }
-export default connect((state) => ({
-  listFilmReducers: state.listFilmReducers,
-  filmDetailReducers: state.filmDetailReducers,
-  watchScreenReducers: state.watchScreenReducers
-}), (dispatch) => ({
-  listFilmActions: bindActionCreators(listFilmActions, dispatch),
-  filmDetailActions: bindActionCreators(filmDetailActions, dispatch),
-  watchScreenActions: bindActionCreators(watchScreenActions, dispatch),
-}))(RootRouter);
+export default RootRouter;

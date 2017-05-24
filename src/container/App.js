@@ -12,7 +12,7 @@ import reducers from '../reducers/index';
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
-import RootRouter from './root_router';
+import RootRouterContainer from './root_router_container';
 
 export default class App extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <RootRouter />
+        <RootRouterContainer />
       </Provider>
     );
   }

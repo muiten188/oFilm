@@ -9,7 +9,7 @@ export function refreshListFilm() {
 export function getListFilm() {
   return (dispatch) => {
     let oListFilm;
-    fetch('http://192.168.1.111:8080/oFilmSite/getListFilm?url=https://phim14.net&name=phim14', {
+    fetch('http://172.17.1.75:8080/oFilmSite/getListFilm?url=https://phim14.net&name=phim14', {
       method: 'GET'
     })
       .then(function (response) {
