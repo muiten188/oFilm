@@ -13,6 +13,7 @@
     "npm": "^4.5.0",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.3",
+    "react-native-fontawesome": "^5.7.0",
     "react-native-marquee-label": "^1.0.0",
     "react-native-modal-dropdown": "^0.4.2",
     "react-native-orientation": "yamill/react-native-orientation",
@@ -21,6 +22,7 @@
     "react-native-vector-icons": "^4.0.1",
     "react-native-video": "^1.0.0",
     "react-native-video-player": "^0.6.1",
+    "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0"

@@ -2,7 +2,7 @@ import * as types from './action_types';
 
 export function getLinkFilm(episode) {
   return (dispatch) => {
-    fetch(`http://172.17.1.75:8080/oFilmSite/getWatchFilmUrl?url=${episode.EpisodeUrl}&name=phim14`, {
+    fetch(`http://192.168.1.111:8080/oFilmSite/getWatchFilmUrl?url=${episode.EpisodeUrl}&name=phim14`, {
       method: 'GET'
     })
       .then(function (response) {

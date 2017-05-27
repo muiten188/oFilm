@@ -1,67 +1,46 @@
-'use strict';
+import React from 'react';
+import { Platform, BackAndroid, ToastAndroid } from 'react-native';
+import { addNavigationHelpers } from 'react-navigation';
+import { RootRouterContainer } from '../config/root_navigation_config';
 
-import React, {
-  Component,
-} from 'react';
-
-import {
-  View,
-  Navigator,
-  Text,
-  StatusBar,
-  Platform,
-  BackAndroid,
-  ToastAndroid
-} from 'react-native';
-import ListFilm from './listfilm/index';
-import FilmDetail from './filmdetail/film_detail';
-import WatchScreen from './filmdetail/watch_screen';
-
-class RootRouter extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  renderScene(route, navigator) {
-    var routeId = route.id;
-    if (routeId === 'grid') {
-      return (
-        <ListFilm {...this.props}
-          navigator={navigator}
-          popCallBack={route.popCallBack} />
-      );
+export default class AppWithNavigationState extends React.Component {
+    //Life cycle component
+    constructor(props) {
+        super(props);
+        this._handleBackAction = this.handleBackAction.bind(this);
     }
-    if (routeId === 'FilmDetail') {
-      return (
-        <FilmDetail
-          {...this.props}
-          navigator={navigator}
-          film={route.oFilm}
-          popCallBack={route.popCallBack} />
-      );
-    }
-    if (routeId === 'WatchFilm') {
-      return (
-        <WatchScreen
-          {...this.props}
-          navigator={navigator}
-          episode={route.episode}
-          filmDetail={route.filmDetail}
-          popCallBack={route.popCallBack} />
-      );
-    }
-  }
 
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <Navigator
-          ref={(navigation) => { this._navigation = navigation; }}
-          style={{ flex: 1 }}
-          initialRoute={{ id: 'grid', name: 'grid' }}
-          renderScene={(this.renderScene.bind(this))}
-        /></View>
-    );
-  }
+    componentDidMount() {
+        if (Platform.OS == "android") {
+            BackAndroid.addEventListener('hardwareBackPress', this._handleBackAction);
+        }
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS == "android") {
+            BackAndroid.removeEventListener('hardwareBackPress', this._handleBackAction);
+        }
+    }
+    //component function
+    handleBackAction() {
+        if (Platform.OS == "android") {
+            ToastAndroid.show('Back button is pressed', ToastAndroid.SHORT);
+        }
+        const { navigationAction } = this.props;
+        const { navigationReducer } = this.props;
+        if (navigationReducer.index > 0) {
+            navigationAction.pop();
+            return true;
+        }
+        else if (navigationReducer.index == 0) {
+            return false
+        }
+    }
+
+    render() {
+        const { navigationAction, navigationReducer } = this.props;
+        return (
+            <RootRouterContainer navigation={addNavigationHelpers({ navigationAction, state: navigationReducer })} />
+        );
+    }
 }
-export default RootRouter;

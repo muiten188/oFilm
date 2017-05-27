@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
   AppRegistry,
   StyleSheet,
@@ -8,55 +10,58 @@ import {
   ListView,
   ScrollView,
   Image,
-  TouchableHighlight,
+  TouchableOpacity,
   Button,
   RefreshControl,
   BackAndroid,
   ToastAndroid
 } from 'react-native';
 import * as utility from "../../common/utility";
+import * as listFilmActions from "../../actions/listfilm_actions";
 
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-export default class index extends Component {
+class index extends Component {
   constructor(props) {
     super(props);
-    this._handleBackButton=this.handleBackButton.bind(this);
+
   }
 
+  static navigationOptions = {
+    title: 'Danh sách phim',
+  };
+
   componentDidMount() {
-    BackAndroid.addEventListener('hardwareBackPress', this._handleBackButton);
     const { getListFilm } = this.props.listFilmActions;
     getListFilm();
   }
 
   componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress', this._handleBackButton);
-  }
-
-  handleBackButton() {
-    ToastAndroid.show('Back button is pressed from list film', ToastAndroid.SHORT);
-    return true;
+    
   }
 
   buildRow(oData) {
     return (
-      <TouchableHighlight onPress={() => this.onListItemClick(this.props, oData)}>
+      <TouchableOpacity onPress={(e)=>this.onListItemClick(oData)}>
         <View style={styles.item}>
           <Image style={{ width: 100, height: 60 }} source={{ uri: oData.PosterUrl }} />
           <Text ellipsizeMode='tail' numberOfLines={2}>{oData.Name1}</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
-  onListItemClick(props, oData) {
-    utility.timerMark();
-    props.navigator.push({ id: "FilmDetail", oFilm: oData });
+
+  onListItemClick(oData) {
+    const { navigationAction } = this.props.navigation;
+    navigationAction.push({ id: "FilmDetail", title: "Film Detail", oFilm: oData });
+    // props.navigator.push({ id: "FilmDetail", oFilm: oData });
   }
+
   _onRefresh() {
     const { isLoading } = this.props.listFilmReducers;
     const { refreshListFilm } = this.props.listFilmActions;
     refreshListFilm();
   }
+
   render() {
     const { listFilm, isLoading } = this.props.listFilmReducers;
     return (
@@ -101,3 +106,16 @@ var styles = StyleSheet.create({
     flexDirection: 'column'
   }
 });
+
+function mapStateToProps(state, props) {
+  return {
+    listFilmReducers: state.listFilmReducers,
+  }
+};
+function mapToDispatch(dispatch) {
+  return {
+    listFilmActions: bindActionCreators(listFilmActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapToDispatch)(index);

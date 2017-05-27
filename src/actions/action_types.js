@@ -1,3 +1,7 @@
+//navigation
+export const PUSH_ROUTE = 'PUSH_ROUTE';
+export const POP_ROUTE = 'POP_ROUTE';
+//
 export const DEFAULT = 'DEFAULT';
 //list film actions
 export const LIST_FILM_REFRESH = 'LIST_FILM_REFRESH';

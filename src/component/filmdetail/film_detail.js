@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 import {
   StyleSheet,
   Navigator,
@@ -7,7 +10,7 @@ import {
   ListView,
   ScrollView,
   Image,
-  TouchableHighlight,
+  TouchableOpacity,
   Button,
   BackAndroid,
   Platform,
@@ -16,27 +19,31 @@ import {
 } from 'react-native';
 import * as utility from "../../common/utility";
 import Orientation from 'react-native-orientation';
+import * as filmDetailActions from "../../actions/film_detail_actions";
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+
 class FilmDetail extends Component {
+  static navigationOptions = ({ navigation, screenProps }) => ({
+    title: `Giới thiệu phim ${navigation.state.params.oFilm.Name1}`,
+    headerLeft: <TouchableOpacity style={{ width: 30, marginLeft: 10 }} onPress={() => { navigation.navigationAction.pop() }}>
+      <FontAwesome>{Icons.chevronLeft}</FontAwesome>
+    </TouchableOpacity>
+  });
+  //vong doi component 
   constructor(props) {
     super(props);
-    this._handleBackButton = this.handleBackButton.bind(this);
-  }
-
-  _back() {
-    this.props.navigator.pop();
   }
 
   componentDidMount() {
-    BackAndroid.removeEventListener('hardwareBackPress');
-    BackAndroid.addEventListener('hardwareBackPress', this._handleBackButton);
-    const { getFilmDetail } = this.props.filmDetailActions;
-    getFilmDetail(this.props.film);
-    utility.timerMark();
+    this.getFilmDetail();
   }
 
   componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress', this._handleBackButton);
+  }
+  //component function
+  _back() {
+    const { rootRouterActions } = this.props;
+    rootRouterActions.popAction();
   }
 
   handleBackButton() {
@@ -47,17 +54,21 @@ class FilmDetail extends Component {
 
   watchFilm(_this, episode) {
     const { filmDetail } = this.props.filmDetailReducers;
-    _this.props.navigator.push({
-      id: "WatchFilm",
-      episode: episode,
-      filmDetail: filmDetail,
-      popCallBack: () => {
-        const { getFilmDetail } = this.props.filmDetailActions;
-        //getFilmDetail(this.props.film);
-      }
-    })
+    const { navigationAction } = this.props.navigation;
+    navigationAction.push({ id: "WatchFilm", title: "WatchFilm", episode: episode, filmDetail: filmDetail });
   }
 
+  _onRefresh() {
+    this.getFilmDetail();
+  }
+  //fetch Data
+  getFilmDetail() {
+    const { oFilm } = this.props.navigation.state.params;
+    const { getFilmDetail } = this.props.filmDetailActions;
+    getFilmDetail(oFilm);
+    utility.timerMark();
+  }
+  //renders...
   buildRowEpisode(episode) {
     return (
       <View style={{ marginBottom: 5 }}>
@@ -92,12 +103,6 @@ class FilmDetail extends Component {
     )
   }
 
-  _onRefresh() {
-    const { isLoading } = this.props.filmDetailReducers;
-    const { getFilmDetail } = this.props.filmDetailActions;
-    getFilmDetail(this.props.film);
-  }
-
   render() {
     const { filmDetail, isLoading } = this.props.filmDetailReducers;
     return (
@@ -126,7 +131,6 @@ class FilmDetail extends Component {
     )
   }
 }
-export default FilmDetail;
 
 var styles = StyleSheet.create({
   itemMargin: {
@@ -155,3 +159,15 @@ var styles = StyleSheet.create({
     borderColor: 'blue'
   }
 });
+function mapStateToProps(state, props) {
+  return {
+    filmDetailReducers: state.filmDetailReducers,
+  }
+};
+function mapToDispatch(dispatch) {
+  return {
+    filmDetailActions: bindActionCreators(filmDetailActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapToDispatch)(FilmDetail);

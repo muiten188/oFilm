@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 import {
   Stylesheet,
   Navigator,
@@ -9,7 +12,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
-  TouchableHighlight,
+  TouchableOpacity,
   Button,
   BackAndroid,
   Platform,
@@ -17,7 +20,15 @@ import {
 } from 'react-native';
 import FilmPlayer from '../../general_component/filmplayer/ofilmplayer';
 import Orientation from 'react-native-orientation';
+import * as watchScreenActions from "../../actions/watch_screen_actions";
+
 class watch extends Component {
+  static navigationOptions = ({ navigation, screenProps }) => ({
+    title: `Xem phim ${navigation.state.params.oFilm.Name1}`,
+    headerLeft: <TouchableOpacity style={{ width: 30, marginLeft: 10 }} onPress={() => { navigation.navigationAction.pop() }}>
+      <FontAwesome>{Icons.chevronLeft}</FontAwesome>
+    </TouchableOpacity>
+  });
   constructor(props) {
     super(props);
     const { width, height } = Dimensions.get('window');
@@ -25,14 +36,6 @@ class watch extends Component {
       videoWidth: width,
       videoHeight: height
     }
-    this._handleBackButton = this.handleBackButton.bind(this);
-  }
-
-  handleBackButton() {
-    ToastAndroid.show('Back button is pressed from watch screen', ToastAndroid.SHORT);
-    this.props.popCallBack();
-    this.props.navigator.pop();
-    return true;
   }
 
   reSetWindowSizeState(width, height) {
@@ -52,8 +55,6 @@ class watch extends Component {
   }
 
   componentDidMount() {
-    BackAndroid.removeEventListener('hardwareBackPress');
-    BackAndroid.addEventListener('hardwareBackPress', this._handleBackButton);
     var initial = Orientation.getInitialOrientation();
     const { width, height } = Dimensions.get('window');
     if (initial === 'PORTRAIT') {
@@ -63,8 +64,9 @@ class watch extends Component {
     }
     Orientation.addOrientationListener(this._orientationDidChange.bind(this));
     //fecth data
+    const { episode } = this.props.navigation.state.params;
     const { getLinkFilm } = this.props.watchScreenActions;
-    getLinkFilm(this.props.episode);
+    getLinkFilm(episode);
   }
 
   componentWillUnmount() {
@@ -72,7 +74,6 @@ class watch extends Component {
   }
 
   render() {
-    const { episode, filmDetail } = this.props;
     const { oLinkFilm } = this.props.watchScreenReducers;
     let linkFilm;
     if (oLinkFilm && typeof (oLinkFilm.link) == "object") {
@@ -100,4 +101,15 @@ class watch extends Component {
     )
   }
 }
-export default watch;
+function mapStateToProps(state, props) {
+  return {
+    watchScreenReducers: state.watchScreenReducers,
+  }
+};
+function mapToDispatch(dispatch) {
+  return {
+    watchScreenActions: bindActionCreators(watchScreenActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapToDispatch)(watch);
