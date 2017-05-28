@@ -23,19 +23,43 @@ import Orientation from 'react-native-orientation';
 import * as watchScreenActions from "../../actions/watch_screen_actions";
 
 class watch extends Component {
-  static navigationOptions = ({ navigation, screenProps }) => ({
-    title: `Xem phim ${navigation.state.params.oFilm.Name1}`,
+  static navigationOptions = {
+    header: null
+  }
+  /*static navigationOptions = ({ navigation, screenProps }) => ({
+    title: `Xem phim ${navigation.state.params.filmDetail.Name1}`,
     headerLeft: <TouchableOpacity style={{ width: 30, marginLeft: 10 }} onPress={() => { navigation.navigationAction.pop() }}>
       <FontAwesome>{Icons.chevronLeft}</FontAwesome>
-    </TouchableOpacity>
-  });
+    </TouchableOpacity>,
+    headerVisible: false
+  });*/
   constructor(props) {
     super(props);
+    debugger;
     const { width, height } = Dimensions.get('window');
     this.state = {
       videoWidth: width,
       videoHeight: height
     }
+  }
+  
+  componentDidMount() {
+    var initial = Orientation.getInitialOrientation();
+    const { width, height } = Dimensions.get('window');
+    if (initial === 'PORTRAIT') {
+      this.reSetWindowSizeState(width, 230);
+    } else {
+      this.reSetWindowSizeState(width, height);
+    }
+    Orientation.addOrientationListener(this._orientationDidChange.bind(this));
+    //fecth data
+    const { episode } = this.props.navigation.state.params;
+    const { getLinkFilm } = this.props.watchScreenActions;
+    getLinkFilm(episode);
+  }
+
+  componentWillUnmount() {
+    
   }
 
   reSetWindowSizeState(width, height) {
@@ -54,23 +78,9 @@ class watch extends Component {
     }
   }
 
-  componentDidMount() {
-    var initial = Orientation.getInitialOrientation();
-    const { width, height } = Dimensions.get('window');
-    if (initial === 'PORTRAIT') {
-      this.reSetWindowSizeState(width, 230);
-    } else {
-      this.reSetWindowSizeState(width, height);
-    }
-    Orientation.addOrientationListener(this._orientationDidChange.bind(this));
-    //fecth data
-    const { episode } = this.props.navigation.state.params;
-    const { getLinkFilm } = this.props.watchScreenActions;
-    getLinkFilm(episode);
-  }
-
-  componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress', this._handleBackButton);
+  navigationBack(){
+    const { navigationAction } = this.props.navigation;
+    navigationAction.pop();
   }
 
   render() {
@@ -95,7 +105,7 @@ class watch extends Component {
           animated={true}
         />
         {
-          linkFilm ? <FilmPlayer title="phim14.net" source={{ uri: linkFilm }} navigator={this.props.navigator} /> : null
+          linkFilm ? <FilmPlayer title="phim14.net" onBack={()=>this.navigationBack()} source={{ uri: linkFilm }} navigator={this.props.navigator} /> : null
         }
       </View>
     )

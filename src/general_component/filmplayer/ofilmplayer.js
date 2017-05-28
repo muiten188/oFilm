@@ -43,6 +43,7 @@ class FilmPlayer extends Component {
       currentTime: 0,
       error: false,
       duration: 0,
+      isProcessing: true
     };
     /*
     * option set when init
@@ -154,14 +155,16 @@ class FilmPlayer extends Component {
    */
   _onProgress(data = {}) {
     let state = this.state;
-    state.currentTime = data.currentTime;
+    if (state.isProcessing) {
+      state.currentTime = data.currentTime;
 
-    if (!state.seeking) {
-      const position = this.calculateSeekerPosition();
-      this.setSeekerPosition(position);
+      if (!state.seeking) {
+        const position = this.calculateSeekerPosition();
+        this.setSeekerPosition(position);
+      }
+
+      this.setState(state);
     }
-
-    this.setState(state);
   }
 
   /**
@@ -345,10 +348,12 @@ class FilmPlayer extends Component {
     state.showControls = !state.showControls;
 
     if (state.showControls) {
+      state.isProcessing = true;
       this.showControlAnimation();
       this.setControlTimeout();
     }
     else {
+      state.isProcessing = false;
       this.hideControlAnimation();
       this.clearControlTimeout();
     }
@@ -1092,8 +1097,8 @@ const styles = {
     control: {
       padding: 16,
     },
-    back:{
-      paddingRight:0,
+    back: {
+      paddingRight: 0,
     },
     text: {
       backgroundColor: 'transparent',
@@ -1147,8 +1152,8 @@ const styles = {
       flexDirection: 'row',
     },
     fullscreen: {
-      marginRight:10,
-        width:10
+      marginRight: 10,
+      width: 10
     },
     playPause: {
       width: 80,
@@ -1162,7 +1167,7 @@ const styles = {
       textAlign: 'left',
     },
     timer: {
-      
+
     },
     timerText: {
       backgroundColor: 'transparent',
@@ -1177,7 +1182,7 @@ const styles = {
       height: 4,
       marginLeft: 10,
       marginRight: 10,
-      backgroundColor:'yellow'
+      backgroundColor: 'yellow'
     },
     fill: {
       alignSelf: 'flex-start',

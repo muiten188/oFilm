@@ -32,26 +32,17 @@ class FilmDetail extends Component {
   //vong doi component 
   constructor(props) {
     super(props);
+    this.isFirstLoading = true;
   }
 
   componentDidMount() {
     this.getFilmDetail();
+    this.isFirstLoading = false;
   }
 
   componentWillUnmount() {
   }
   //component function
-  _back() {
-    const { rootRouterActions } = this.props;
-    rootRouterActions.popAction();
-  }
-
-  handleBackButton() {
-    ToastAndroid.show('Back button is pressed from film detail', ToastAndroid.SHORT);
-    this._back();
-    return true;
-  }
-
   watchFilm(_this, episode) {
     const { filmDetail } = this.props.filmDetailReducers;
     const { navigationAction } = this.props.navigation;
@@ -72,12 +63,14 @@ class FilmDetail extends Component {
   buildRowEpisode(episode) {
     return (
       <View style={{ marginBottom: 5 }}>
-        <Button
-          onPress={() => this.watchFilm(this, episode)}
-          title={episode.Episode.toString()}
-          color="#555"
-          accessibilityLabel="Learn more about purple"
-        />
+        <TouchableOpacity style={{
+          height: 33,
+          backgroundColor: '#8c1b0a',
+          padding: 6,
+          borderRadius: 3
+        }} onPress={() => this.watchFilm(this, episode)}>
+          <Text style={{ color: '#ccc' }}>{episode.Episode.toString()}</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -109,7 +102,7 @@ class FilmDetail extends Component {
       <ScrollView style={styles.scroll}
         refreshControl={
           <RefreshControl
-            refreshing={isLoading ? true : false}
+            refreshing={isLoading || this.isFirstLoading ? true : false}
             onRefresh={() => this._onRefresh()}
             tintColor="#ff0000"
             title="Loading..."
@@ -117,7 +110,7 @@ class FilmDetail extends Component {
             colors={['#ff0000', '#00ff00', '#0000ff']}
             progressBackgroundColor="#ffff00"
           />}>
-        <View pointerEvents={isLoading ? "none" : "auto"} style={{ flexDirection: 'column', flex: 1 }}>
+        <View pointerEvents={isLoading || this.isFirstLoading ? "none" : "auto"} style={{ flexDirection: 'column', flex: 1 }}>
           <Image style={[styles.fullWidthItem, styles.filmImage, styles.itemMargin]} source={{ uri: filmDetail ? filmDetail.Thumbnail : null }} />
           <Text style={[styles.fullWidthItem, styles.itemMargin]}>Phim: {filmDetail ? filmDetail.Name : null}</Text>
           <Text style={[styles.fullWidthItem, styles.itemMargin]}>Mô tả: {filmDetail ? filmDetail.Description : null}</Text>
@@ -142,7 +135,7 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   filmImage: {
-    height: 220
+    height: 450
   },
   listEpisode: {
     margin: 5,

@@ -97,6 +97,7 @@ var styles = StyleSheet.create({
   },
   list: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
     flexWrap: 'wrap'
   },
   item: {
