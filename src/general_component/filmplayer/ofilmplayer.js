@@ -9,7 +9,8 @@ import {
   Easing,
   Image,
   View,
-  Text
+  Text,
+  Slider
 } from 'react-native';
 
 import Video from 'react-native-video';
@@ -40,7 +41,7 @@ class FilmPlayer extends Component {
       seekerOffset: 0,
       seeking: false,
       loading: false,
-      currentTime: 0,
+      currentTime: this.props.currentTime || 0,
       error: false,
       duration: 0,
       isProcessing: true
@@ -137,7 +138,6 @@ class FilmPlayer extends Component {
    */
   _onLoad(data = {}) {
     let state = this.state;
-
     state.duration = data.duration;
     state.loading = false;
     this.setState(state);
@@ -871,6 +871,8 @@ class FilmPlayer extends Component {
    * Render the seekbar and attach its handlers
    */
   renderSeekbar() {
+    let state = this.state;
+    debugger;
     return (
       <View
         style={styles.seek.track}
@@ -878,28 +880,13 @@ class FilmPlayer extends Component {
           this.player.seekerWidth = event.nativeEvent.layout.width;
         }}
       >
-        <View style={[
-          styles.seek.fill,
-          {
-            width: this.state.seekerFillWidth,
-            backgroundColor: this.props.seekColor || '#f12b24'
-          }
-        ]}>
-          <View
-            style={[
-              styles.seek.handle,
-              {
-                left: this.state.seekerPosition
-              }
-            ]}
-            { ...this.player.seekPanResponder.panHandlers }
-          >
-            <View style={[
-              styles.seek.circle,
-              { backgroundColor: this.props.seekColor || '#f12b24' }]}
-            />
-          </View>
-        </View>
+        <Slider
+          style={{ height: 5 }}
+          maximumValue={state.duration}
+          value={state.currentTime}
+          minimumValue={0}
+          step={1}
+          onValueChange={(value) => this.seekTo(value)}></Slider>
       </View>
     );
   }
@@ -959,6 +946,7 @@ class FilmPlayer extends Component {
     if (this.state.loading) {
       return (
         <View style={styles.loader.container}>
+
           <Animated.Image source={require('./assets/img/loader-icon.png')} style={[
             styles.loader.icon,
             {
@@ -1179,10 +1167,9 @@ const styles = {
   seek: StyleSheet.create({
     track: {
       flex: 1,
-      height: 4,
-      marginLeft: 10,
-      marginRight: 10,
-      backgroundColor: 'yellow'
+      marginLeft: 0,
+      marginRight: 0,
+
     },
     fill: {
       alignSelf: 'flex-start',

@@ -51,7 +51,6 @@ class watch extends Component {
     } else {
       this.reSetWindowSizeState(width, height);
     }
-    Orientation.addOrientationListener(this._orientationDidChange.bind(this));
     //fecth data
     const { episode } = this.props.navigation.state.params;
     const { getLinkFilm } = this.props.watchScreenActions;
@@ -67,15 +66,6 @@ class watch extends Component {
       videoWidth: width,
       videoHeight: height
     })
-  }
-
-  _orientationDidChange(orientation) {
-    const { width, height } = Dimensions.get('window');
-    if (orientation == 'LANDSCAPE') {
-      this.reSetWindowSizeState(width, height);
-    } else {
-      this.reSetWindowSizeState(width, 230);
-    }
   }
 
   navigationBack(){
@@ -98,7 +88,7 @@ class watch extends Component {
       linkFilm = oLinkFilm.link;
     }
     return (
-      <View style={{ flex: 1, flexDirection: 'column' }}>
+      <View style={{ width:this.state.videoWidth,height:this.state.videoHeight, flexDirection: 'column' }}>
         <StatusBar
           hidden={true}
           showHideTransition={'fade'}
