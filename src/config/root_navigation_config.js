@@ -10,7 +10,7 @@ const stackNavigatorConfiguration = {
     initialRouteName: 'ListFilm'
 }
 
-export const RootRouterContainer = StackNavigator({
+export const RootNavigationContainer = StackNavigator({
     ListFilm: { screen: ListFilm },
     FilmDetail: { screen: FilmDetail },
     WatchFilm: { screen: WatchFilm }

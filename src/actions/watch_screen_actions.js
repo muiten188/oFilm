@@ -1,8 +1,8 @@
 import * as types from './action_types';
-
+import * as AppConfig from '../config/app_config';
 export function getLinkFilm(episode) {
   return (dispatch) => {
-    fetch(`http://192.168.1.111:8080/oFilmSite/getWatchFilmUrl?url=${episode.EpisodeUrl}&name=phim14`, {
+    fetch(`http://${AppConfig.CRAWLER_HOST}/oFilmSite/getWatchFilmUrl?url=${episode.EpisodeUrl}&name=phim14`, {
       method: 'GET'
     })
       .then(function (response) {

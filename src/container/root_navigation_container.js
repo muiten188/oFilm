@@ -7,7 +7,7 @@ import {
     StackNavigator,
 } from 'react-navigation';
 import * as navigationAction from '../actions/root_navigation_actions';
-import AppWithNavigationState from '../component/root_router';
+import RootNavigation from '../component/root_navigation';
 
 
 function mapStateToProps(state, props) {
@@ -21,4 +21,4 @@ function mapToDispatch(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapToDispatch)(AppWithNavigationState);
+export default connect(mapStateToProps, mapToDispatch)(RootNavigation);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, BackAndroid, ToastAndroid } from 'react-native';
 import { addNavigationHelpers } from 'react-navigation';
-import { RootRouterContainer } from '../config/root_navigation_config';
+import { RootNavigationContainer } from '../config/root_navigation_config';
 
 export default class AppWithNavigationState extends React.Component {
     //Life cycle component
@@ -40,7 +40,7 @@ export default class AppWithNavigationState extends React.Component {
     render() {
         const { navigationAction, navigationReducer } = this.props;
         return (
-            <RootRouterContainer navigation={addNavigationHelpers({ navigationAction, state: navigationReducer })} />
+            <RootNavigationContainer />
         );
     }
 }

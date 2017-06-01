@@ -4,12 +4,11 @@ import * as action_types from '../actions/action_types';
 import { RootRouterContainer } from '../config/root_navigation_config';
 
 const mainAction = RootRouterContainer.router.getActionForPathAndParams('ListFilm');
-//const tempNavState = RootRouterContainer.router.getStateForAction(mainAction);
-
-const initialNavState = RootRouterContainer.router.getStateForAction(
-    mainAction,
-    0//index default 0
-);
+const initialNavState = RootRouterContainer.router.getStateForAction(mainAction);
+// const initialNavState = RootRouterContainer.router.getStateForAction(
+//     mainAction,
+//     0//index default 0
+// );
 
 function navigationReducer(state = initialNavState || {}, action = {}) {
     let nextState;

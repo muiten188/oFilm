@@ -1,5 +1,5 @@
 import * as types from './action_types';
-
+import * as AppConfig from '../config/app_config';
 
 export function refreshListFilm() {
   return (dispatch) => {
@@ -9,7 +9,7 @@ export function refreshListFilm() {
 export function getListFilm() {
   return (dispatch) => {
     let oListFilm;
-    fetch('http://192.168.1.111:8080/oFilmSite/getListFilm?url=https://phim14.net&name=phim14', {
+    fetch(`http://${AppConfig.CRAWLER_HOST}/oFilmSite/getListFilm?url=https://phim14.net&name=phim14`, {
       method: 'GET'
     })
       .then(function (response) {
