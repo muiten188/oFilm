@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import FilmPlayer from '../../general_component/filmplayer/ofilmplayer';
 import Orientation from 'react-native-orientation';
-import * as watchScreenActions from "../../actions/watch_screen_actions";
+import * as watchScreenActions from "../../actions/component/watch_screen_actions";
 
 class watch extends Component {
   static navigationOptions = {

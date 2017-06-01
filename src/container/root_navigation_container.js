@@ -6,7 +6,7 @@ import {
     addNavigationHelpers,
     StackNavigator,
 } from 'react-navigation';
-import * as navigationAction from '../actions/root_navigation_actions';
+import * as navigationAction from '../actions/root_navigation/root_navigation_actions';
 import RootNavigation from '../component/root_navigation';
 
 

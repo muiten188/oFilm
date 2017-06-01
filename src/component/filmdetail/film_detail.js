@@ -19,7 +19,7 @@ import {
 } from 'react-native';
 import * as utility from "../../common/utility";
 import Orientation from 'react-native-orientation';
-import * as filmDetailActions from "../../actions/film_detail_actions";
+import * as filmDetailActions from "../../actions/component/film_detail_actions";
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 
 class FilmDetail extends Component {

@@ -17,7 +17,7 @@ import {
   ToastAndroid
 } from 'react-native';
 import * as utility from "../../common/utility";
-import * as listFilmActions from "../../actions/listfilm_actions";
+import * as listFilmActions from "../../actions/component/listfilm_actions";
 
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 class index extends Component {
@@ -52,6 +52,7 @@ class index extends Component {
 
   onListItemClick(oData) {
     const { navigationAction } = this.props.navigation;
+    debugger;
     navigationAction.push({ id: "FilmDetail", title: "Film Detail", oFilm: oData });
     // props.navigator.push({ id: "FilmDetail", oFilm: oData });
   }

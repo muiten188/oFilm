@@ -6,7 +6,7 @@ import {
     addNavigationHelpers,
     StackNavigator,
 } from 'react-navigation';
-import * as drawerNavigationAction from '../actions/root_drawer_navigation_action';
+import * as drawerNavigationAction from '../actions/drawer_menu_navigation/root_drawer_navigation_action';
 import RootDrawerNavigation from '../component/root_drawer_navigation';
 
 
