@@ -10,6 +10,10 @@ export default class AppWithNavigationState extends React.Component {
         this._handleBackAction = this.handleBackAction.bind(this);
     }
 
+    static navigationOptions = {
+        drawerLabel: 'Danh Sách phim'
+    };
+
     componentDidMount() {
         if (Platform.OS == "android") {
             BackAndroid.addEventListener('hardwareBackPress', this._handleBackAction);
@@ -39,7 +43,6 @@ export default class AppWithNavigationState extends React.Component {
 
     render() {
         const { navigationAction, navigationReducer } = this.props;
-        debugger;
         return (
             <RootNavigationContainer navigation={addNavigationHelpers({ navigationAction, state: navigationReducer })}/>
         );

@@ -28,6 +28,7 @@ class index extends Component {
 
   static navigationOptions = {
     title: 'Danh sách phim',
+    headerLeft:null
   };
 
   componentDidMount() {
@@ -52,7 +53,6 @@ class index extends Component {
 
   onListItemClick(oData) {
     const { navigationAction } = this.props.navigation;
-    debugger;
     navigationAction.push({ id: "FilmDetail", title: "Film Detail", oFilm: oData });
     // props.navigator.push({ id: "FilmDetail", oFilm: oData });
   }

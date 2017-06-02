@@ -19,7 +19,6 @@ export default class AppWithNavigationState extends React.Component {
     }
 
     render() {
-        const { navigationAction, navigationReducer } = this.props;
         return (
             <RootDrawerNavigator/>
         );

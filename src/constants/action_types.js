@@ -1,6 +1,9 @@
 //navigation
 export const PUSH_ROUTE = 'PUSH_ROUTE';
 export const POP_ROUTE = 'POP_ROUTE';
+//drawer navigation
+export const DRAWEROPEN="DRAWEROPEN";
+export const DRAWERCLOSE="DRAWERCLOSE";
 //
 export const DEFAULT = 'DEFAULT';
 //list film actions

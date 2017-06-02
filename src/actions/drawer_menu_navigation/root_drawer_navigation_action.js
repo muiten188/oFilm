@@ -1,13 +1,11 @@
 import * as types from '../../constants/action_types';
-//copy from navigation
-export function push(route) {
+export function DrawerOpen() {
   return {
-    type: types.PUSH_ROUTE,
-    route: route,
+    type: types.DRAWEROPEN
   };
 }
-export function pop() {
+export function DrawerClose() {
   return {
-    type: types.POP_ROUTE
+    type: types.DRAWERCLOSE
   };
 }

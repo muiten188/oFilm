@@ -14,6 +14,15 @@ function navigationReducer(state = initialNavState || {}, action = {}) {
     switch (action.type) {
         case action_types.PUSH_ROUTE:
             switch (action.route.id) {
+                case ("ListFilm"):
+                    nextState = RootNavigationContainer.router.getStateForAction(
+                        NavigationActions.navigate({
+                            routeName: action.route.id,
+                            params: { oFilmServer: action.route.oFilmServer },
+                            action: NavigationActions.navigate({ routeName: action.route.id })
+                        }),
+                        state);
+                    break;
                 case "FilmDetail":
                     nextState = RootNavigationContainer.router.getStateForAction(
                         NavigationActions.navigate({
