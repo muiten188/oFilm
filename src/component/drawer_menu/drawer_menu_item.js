@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 import {
     Button,
     StyleSheet,
@@ -12,16 +13,20 @@ import {
     TouchableOpacity
 } from 'react-native';
 import * as navigationAction from '../../actions/root_navigation/root_navigation_actions';
+
 const defaultImageFilm = require('../../resources/image/default.jpeg');
 class DrawerMenuItem extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    onItemDrawerMenuClick(e, data) {
-        debugger;
+    onItemDrawerMenuClick(e, data) {     
         const { navigationAction } = this.props;
-        navigationAction.push({ id: "ListFilm", title: "ListFilm", oFilmServer: data });
+        setTimeout(()=>{
+            navigationAction.push({ id: "ListFilm", title: "ListFilm", oFilmServer: data });
+        },0)
+        this.props.navigation.navigate('DrawerClose');
+        //
     }
 
     render() {
@@ -70,14 +75,10 @@ const styles = StyleSheet.create({
     }
 });
 function mapStateToProps(state, props) {
-    return {
-        drawerNavigationReducer: state.drawerNavigationReducer,
-        navigationReducer: state.navigationReducer,
-    }
+    return state;
 };
 function mapToDispatch(dispatch) {
     return {
-        drawerNavigationAction: bindActionCreators(drawerNavigationAction, dispatch),
         navigationAction: bindActionCreators(navigationAction, dispatch),
     }
 }

@@ -1,9 +1,8 @@
 import React from 'react';
 import { Platform, BackAndroid, ToastAndroid } from 'react-native';
-import { addNavigationHelpers } from 'react-navigation';
 import { RootRouterContainer } from '../config/root_navigation_config';
 import { RootDrawerNavigator } from '../config/root_drawer_navigator_config';
-
+import { addNavigationHelpers } from 'react-navigation';
 export default class AppWithNavigationState extends React.Component {
     //Life cycle component
     constructor(props) {
@@ -20,7 +19,7 @@ export default class AppWithNavigationState extends React.Component {
 
     render() {
         return (
-            <RootDrawerNavigator/>
+            <RootDrawerNavigator />
         );
     }
 }

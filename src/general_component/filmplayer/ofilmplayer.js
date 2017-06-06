@@ -872,7 +872,6 @@ class FilmPlayer extends Component {
    */
   renderSeekbar() {
     let state = this.state;
-    debugger;
     return (
       <View
         style={styles.seek.track}

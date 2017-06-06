@@ -58,6 +58,7 @@ function navigationReducer(state = initialNavState || {}, action = {}) {
             nextState = RootNavigationContainer.router.getStateForAction(action, state);
             break;
     }
-    return nextState || state;
+    
+    return nextState||state;
 }
 export default navigationReducer;

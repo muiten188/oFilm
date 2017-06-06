@@ -35,22 +35,22 @@ class watch extends Component {
   });*/
   constructor(props) {
     super(props);
-    debugger;
     const { width, height } = Dimensions.get('window');
     this.state = {
       videoWidth: width,
       videoHeight: height
     }
   }
-  
+
   componentDidMount() {
     var initial = Orientation.getInitialOrientation();
     const { width, height } = Dimensions.get('window');
     if (initial === 'PORTRAIT') {
-      this.reSetWindowSizeState(width, 230);
+      this.reSetWindowSizeState(width, (width * 9) / 16);
     } else {
       this.reSetWindowSizeState(width, height);
     }
+    Orientation.addOrientationListener(this._orientationDidChange);
     //fecth data
     const { episode } = this.props.navigation.state.params;
     const { getLinkFilm } = this.props.watchScreenActions;
@@ -58,7 +58,17 @@ class watch extends Component {
   }
 
   componentWillUnmount() {
-    
+    Orientation.removeOrientationListener(this._orientationDidChange);
+  }
+
+  _orientationDidChange = (orientation) => {
+    debugger;
+    const { width, height } = Dimensions.get('window');
+    if (orientation === 'LANDSCAPE') {
+      this.reSetWindowSizeState(width, height);
+    } else {
+      this.reSetWindowSizeState(width, (width * 9) / 16);
+    }
   }
 
   reSetWindowSizeState(width, height) {
@@ -68,7 +78,7 @@ class watch extends Component {
     })
   }
 
-  navigationBack(){
+  navigationBack() {
     const { navigationAction } = this.props.navigation;
     navigationAction.pop();
   }
@@ -88,14 +98,14 @@ class watch extends Component {
       linkFilm = oLinkFilm.link;
     }
     return (
-      <View style={{ width:this.state.videoWidth,height:this.state.videoHeight, flexDirection: 'column' }}>
+      <View style={{ width: this.state.videoWidth, height: this.state.videoHeight, flexDirection: 'column' }}>
         <StatusBar
           hidden={true}
           showHideTransition={'fade'}
           animated={true}
         />
         {
-          linkFilm ? <FilmPlayer title="phim14.net" onBack={()=>this.navigationBack()} source={{ uri: linkFilm }} navigator={this.props.navigator} /> : null
+          linkFilm ? <FilmPlayer title="phim14.net" onBack={() => this.navigationBack()} source={{ uri: linkFilm }} navigator={this.props.navigator} /> : null
         }
       </View>
     )
