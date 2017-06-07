@@ -18,7 +18,8 @@ import {
   Button,
   BackAndroid,
   Platform,
-  ToastAndroid
+  ToastAndroid,
+  ActivityIndicator
 } from 'react-native';
 import FilmPlayer from '../../general_component/filmplayer/ofilmplayer';
 import * as watchScreenActions from "../../actions/component/watch_screen_actions";
@@ -37,9 +38,7 @@ class watch extends Component {
   constructor(props) {
     super(props);
     const { width, height } = Dimensions.get('window');
-    this._fullScreen = true;
     this.state = {
-      _fullScreen: false,
       videoWidth: width,
       videoHeight: height
     }
@@ -54,19 +53,7 @@ class watch extends Component {
   }
 
   _orientationDidChange(body) {
-    if (body.orientation == "LANDSCAPE" && this.state._fullScreen == false) {
-      this.setState({
-        _fullScreen:true
-      })
-    }
-    else if (body.orientation == "PORTRAIT" && this.state._fullScreen == true) {
-      const { width, height } = Dimensions.get('window');
-      this.setState({
-        _fullScreen:false,
-        videoWidth:width,
-        videoHeight:(width * 9) / 16
-      })
-    }
+
   }
 
   componentWillUnmount() {
@@ -84,16 +71,15 @@ class watch extends Component {
     navigationAction.pop();
   }
 
-  test(event) {
+  _onLayout(event) {
     let { x, y, width, height } = event.nativeEvent.layout;
-    // if (this._videoWidth != width && this._videoHeight != height && width <= height) {
-    //   this._videoWidth = width;
-    //   this._videoHeight = (width * 9) / 16;
-    //   this.reSetWindowSizeState(this._videoHeight);
-    // }
-    // else if (this._videoWidth != width && this._videoHeight != height && width > height) {
-    //   this.reSetWindowSizeState( "100%");
-    // }
+    if (this._videoWidth != width && this._videoHeight != height && width <= height) {
+      this._videoHeight = (width * 9) / 16;
+      this.reSetWindowSizeState(this._videoHeight);
+    }
+    else if (this._videoWidth != width && this._videoHeight != height && width > height) {
+      this.reSetWindowSizeState("100%");
+    }
   }
 
   render() {
@@ -110,18 +96,21 @@ class watch extends Component {
     if (oLinkFilm && typeof (oLinkFilm.link) == "string") {
       linkFilm = oLinkFilm.link;
     }
+    console.log(this.state.videoHeight);
     return (
-      <View style={[this.state._fullScreen ? { flex: 1 } : { width: '100%', height: this.state.videoHeight }, { flexDirection: 'column' }]}
-        onLayout={(event) => this.test(event)}
-      >
+      <View style={{ flex: 1, backgroundColor: '#cef0f5' }}
+        onLayout={(event) => this._onLayout(event)}>
         <StatusBar
           hidden={true}
           showHideTransition={'fade'}
           animated={true}
         />
-        {
-          linkFilm ? <FilmPlayer title="phim14.net" onBack={() => this.navigationBack()} source={{ uri: linkFilm }} navigator={this.props.navigator} /> : null
-        }
+        <View style={{ width: '100%', height: this.state.videoHeight, backgroundColor: '#c4c4c4' }}>
+          
+          {
+            linkFilm ? <FilmPlayer title="phim14.net" onBack={() => this.navigationBack()} source={{ uri: linkFilm }} navigator={this.props.navigator} /> : null
+          }
+        </View>
       </View>
     )
   }
@@ -138,3 +127,13 @@ function mapToDispatch(dispatch) {
 }
 
 export default connect(mapStateToProps, mapToDispatch)(watch);
+{/*<ActivityIndicator
+            animating={true}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 8,
+              height: 80
+            }}
+            size="large"
+          />*/}

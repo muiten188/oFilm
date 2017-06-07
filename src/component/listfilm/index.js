@@ -22,12 +22,12 @@ import * as listFilmActions from "../../actions/component/listfilm_actions";
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 class index extends Component {
   constructor(props) {
-    super(props); 
+    super(props);
   }
 
   static navigationOptions = {
     title: 'Danh sách phim',
-    headerLeft:null
+    headerLeft: null
   };
 
   componentDidMount() {
@@ -36,14 +36,14 @@ class index extends Component {
   }
 
   componentWillUnmount() {
-    
+
   }
 
   buildRow(oData) {
     return (
-      <TouchableOpacity onPress={(e)=>this.onListItemClick(oData)}>
+      <TouchableOpacity onPress={(e) => this.onListItemClick(oData)}>
         <View style={styles.item}>
-          <Image style={{ width: 100, height: 60 }} source={{ uri: oData.PosterUrl }} />
+          <Image style={{ width: 100, height: 60, resizeMode: 'cover' }} source={{ uri: oData.PosterUrl }} />
           <Text ellipsizeMode='tail' numberOfLines={2}>{oData.Name1}</Text>
         </View>
       </TouchableOpacity>

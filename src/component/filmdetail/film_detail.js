@@ -135,7 +135,8 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   filmImage: {
-    height: 450
+    height: 450,
+    resizeMode:'contain'
   },
   listEpisode: {
     margin: 5,
