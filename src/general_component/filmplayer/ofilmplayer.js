@@ -10,7 +10,8 @@ import {
   Image,
   View,
   Text,
-  Slider
+  Slider,
+  ActivityIndicator
 } from 'react-native';
 
 import Video from 'react-native-video';
@@ -40,7 +41,7 @@ class FilmPlayer extends Component {
       volumeOffset: 0,
       seekerOffset: 0,
       seeking: false,
-      loading: false,
+      loading: true,
       currentTime: this.props.currentTime || 0,
       error: false,
       duration: 0,
@@ -945,20 +946,17 @@ class FilmPlayer extends Component {
     if (this.state.loading) {
       return (
         <View style={styles.loader.container}>
-
-          <Animated.Image source={require('./assets/img/loader-icon.png')} style={[
-            styles.loader.icon,
-            {
-              transform: [
-                {
-                  rotate: this.animations.loader.rotate.interpolate({
-                    inputRange: [0, 360],
-                    outputRange: ['0deg', '360deg']
-                  })
-                }
-              ]
-            }
-          ]} />
+          <ActivityIndicator
+            animating={true}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 8,
+              height: 80
+            }}
+            size="large"
+          />
         </View>
       );
     }

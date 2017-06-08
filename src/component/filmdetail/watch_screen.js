@@ -37,6 +37,7 @@ class watch extends Component {
   });*/
   constructor(props) {
     super(props);
+    this._videoLoading = true;
     const { width, height } = Dimensions.get('window');
     this.state = {
       videoWidth: width,
@@ -49,7 +50,8 @@ class watch extends Component {
     const { episode } = this.props.navigation.state.params;
     const { getLinkFilm } = this.props.watchScreenActions;
     getLinkFilm(episode);
-    DeviceEventEmitter.addListener("orientationDidChange", (body) => this._orientationDidChange(body));
+    this._videoLoading = false;
+    //DeviceEventEmitter.addListener("orientationDidChange", (body) => this._orientationDidChange(body));
   }
 
   _orientationDidChange(body) {
@@ -57,7 +59,9 @@ class watch extends Component {
   }
 
   componentWillUnmount() {
-    DeviceEventEmitter.removeListener("orientationDidChange");
+    //DeviceEventEmitter.removeListener("orientationDidChange");
+    const { resetState } = this.props.watchScreenActions;
+    resetState();
   }
 
   reSetWindowSizeState(height) {
@@ -82,21 +86,40 @@ class watch extends Component {
     }
   }
 
-  render() {
-    const { oLinkFilm } = this.props.watchScreenReducers;
+  _checkLoading(linkFilm, videoLoading) {
+    if (linkFilm && !videoLoading) {
+      return true;
+      //off loading
+    }
+    else {
+      return false;
+    }
+  }
+
+  _getAutoLink(oLinkFilm, videoLoading) {
     let linkFilm;
-    if (oLinkFilm && typeof (oLinkFilm.link) == "object") {
-      let oLink = oLinkFilm.link.filter(function (oLink) {
-        return oLink.label == "Auto";
-      })
-      if (oLink.length > 0) {
-        linkFilm = oLink[0].link;
+    if (!videoLoading) {
+      if (oLinkFilm && typeof (oLinkFilm.link) == "object") {
+        let oLink = oLinkFilm.link.filter(function (oLink) {
+          return oLink.label == "Auto";
+        })
+        if (oLink.length > 0) {
+          linkFilm = oLink[0].link;
+        }
+      }
+      else if (oLinkFilm && typeof (oLinkFilm.link) == "string") {
+        linkFilm = oLinkFilm.link;
       }
     }
-    if (oLinkFilm && typeof (oLinkFilm.link) == "string") {
-      linkFilm = oLinkFilm.link;
-    }
-    console.log(this.state.videoHeight);
+    //lồng nhiều quá
+    return linkFilm;
+  }
+
+  render() {
+    const { oLinkFilm } = this.props.watchScreenReducers;
+    let linkFilm = this._getAutoLink(oLinkFilm, this._videoLoading);
+    let showVideo = this._checkLoading(linkFilm, this._videoLoading);
+    debugger;
     return (
       <View style={{ flex: 1, backgroundColor: '#cef0f5' }}
         onLayout={(event) => this._onLayout(event)}>
@@ -106,9 +129,21 @@ class watch extends Component {
           animated={true}
         />
         <View style={{ width: '100%', height: this.state.videoHeight, backgroundColor: '#c4c4c4' }}>
-          
+
           {
-            linkFilm ? <FilmPlayer title="phim14.net" onBack={() => this.navigationBack()} source={{ uri: linkFilm }} navigator={this.props.navigator} /> : null
+            showVideo ?
+              <FilmPlayer title="phim14.net" onBack={() => this.navigationBack()} source={{ uri: linkFilm }} navigator={this.props.navigator} /> :
+              <ActivityIndicator
+                animating={true}
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 8,
+                  height: 80
+                }}
+                size="large"
+              />
           }
         </View>
       </View>
@@ -127,13 +162,3 @@ function mapToDispatch(dispatch) {
 }
 
 export default connect(mapStateToProps, mapToDispatch)(watch);
-{/*<ActivityIndicator
-            animating={true}
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 8,
-              height: 80
-            }}
-            size="large"
-          />*/}

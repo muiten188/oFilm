@@ -27,3 +27,9 @@ export function linkFilm(oLinkFilm){
         oLinkFilm
     }
 }
+
+export function resetState(){
+  return {
+        type: types.RESETWATCHSCEENSTATE
+    }
+}

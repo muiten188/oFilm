@@ -11,6 +11,8 @@ export default function (state = initState, action = {}) {
                 oLinkFilm,
                 isLoading: false
             };
+        case types.RESETWATCHSCEENSTATE:
+            return initState;
         default:
             return state;
 
