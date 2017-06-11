@@ -108,7 +108,7 @@ class FilmDetail extends Component {
             title="Loading..."
             titleColor="#00ff00"
             colors={['#ff0000', '#00ff00', '#0000ff']}
-            progressBackgroundColor="#ffff00"
+            progressBackgroundColor="#ffffff"
           />}>
         <View pointerEvents={isLoading || this.isFirstLoading ? "none" : "auto"} style={{ flexDirection: 'column', flex: 1 }}>
           <Image style={[styles.fullWidthItem, styles.filmImage, styles.itemMargin]} source={{ uri: filmDetail ? filmDetail.Thumbnail : null }} />

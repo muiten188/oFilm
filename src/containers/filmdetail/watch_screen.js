@@ -78,7 +78,7 @@ class watch extends Component {
   _onLayout(event) {
     let { x, y, width, height } = event.nativeEvent.layout;
     if (this._videoWidth != width && this._videoHeight != height && width <= height) {
-      this._videoHeight = (width * 9) / 16;
+      this._videoHeight = ((width * 9) / 16) + 20;
       this.reSetWindowSizeState(this._videoHeight);
     }
     else if (this._videoWidth != width && this._videoHeight != height && width > height) {
@@ -119,7 +119,6 @@ class watch extends Component {
     const { oLinkFilm } = this.props.watchScreenReducers;
     let linkFilm = this._getAutoLink(oLinkFilm, this._videoLoading);
     let showVideo = this._checkLoading(linkFilm, this._videoLoading);
-    debugger;
     return (
       <View style={{ flex: 1, backgroundColor: '#cef0f5' }}
         onLayout={(event) => this._onLayout(event)}>
@@ -128,8 +127,7 @@ class watch extends Component {
           showHideTransition={'fade'}
           animated={true}
         />
-        <View style={{ width: '100%', height: this.state.videoHeight, backgroundColor: '#c4c4c4' }}>
-
+        <View style={{ width: '100%', height: this.state.videoHeight, backgroundColor: '#010001' }}>
           {
             showVideo ?
               <FilmPlayer title="phim14.net" onBack={() => this.navigationBack()} source={{ uri: linkFilm }} navigator={this.props.navigator} /> :

@@ -70,11 +70,11 @@ class index extends Component {
           <RefreshControl
             refreshing={isLoading ? true : false}
             onRefresh={() => this._onRefresh()}
-            tintColor="#ff0000"
+            tintColor="#ffffff"
             title="Loading..."
             titleColor="#00ff00"
             colors={['#ff0000', '#00ff00', '#0000ff']}
-            progressBackgroundColor="#ffff00"
+            progressBackgroundColor="#ffffff"
           />
         }>
         {

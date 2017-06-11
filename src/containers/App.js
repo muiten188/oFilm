@@ -6,18 +6,23 @@ import {
   View
 } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import thunk from 'redux-thunk';
-import reducers from '../reducers/index';
+import storeConfig from '../store/store_config';
 
-const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-const store = createStoreWithMiddleware(reducers);
+
 import RootDrawerNavigationContainer from './root_drawer_navigator_container';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      store:{}
+    }
   }
+  
+  componentDidMount(){
+    storeConfig(store=> this.setState({store}))
+  }
+
   render() {
     return (
       <Provider store={store}>

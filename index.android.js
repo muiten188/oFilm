@@ -12,5 +12,5 @@ import {
   View
 } from 'react-native';
 
-import App from './src/container/App';
-AppRegistry.registerComponent('oFilm', () => App);
+import index from './src/index';
+AppRegistry.registerComponent('oFilm', () => index);

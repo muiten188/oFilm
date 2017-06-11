@@ -953,8 +953,9 @@ class FilmPlayer extends Component {
               alignItems: 'center',
               justifyContent: 'center',
               padding: 8,
-              height: 80
+              height: 80            
             }}
+            color="red"
             size="large"
           />
         </View>
