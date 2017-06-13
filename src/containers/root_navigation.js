@@ -1,18 +1,17 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Platform, BackAndroid, ToastAndroid } from 'react-native';
 import { addNavigationHelpers } from 'react-navigation';
-import { RootNavigationContainer } from '../config/root_navigation_config';
+import { RootNavigationContainer } from './root_navigation_config';
+import * as navigationAction from '../store/actions/root_navigation/root_navigation_actions';
 
-export default class AppWithNavigationState extends React.Component {
+class RootNavigation extends React.Component {
     //Life cycle component
     constructor(props) {
         super(props);
         this._handleBackAction = this.handleBackAction.bind(this);
     }
-
-    static navigationOptions = {
-        drawerLabel: 'Danh Sách phim'
-    };
 
     componentDidMount() {
         if (Platform.OS == "android") {
@@ -43,8 +42,21 @@ export default class AppWithNavigationState extends React.Component {
 
     render() {
         const { navigationAction, navigationReducer } = this.props;
+        debugger;
         return (
             <RootNavigationContainer navigation={addNavigationHelpers({ navigationAction, state: navigationReducer })}/>
         );
     }
 }
+function mapStateToProps(state, props) {
+    return {
+        navigationReducer: state.navigationReducer,
+    }
+};
+function mapToDispatch(dispatch) {
+    return {
+        navigationAction: bindActionCreators(navigationAction, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapToDispatch)(RootNavigation);

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import FontAwesome, { Icons } from 'react-native-fontawesome';
 import {
   StyleSheet,
   Navigator,
@@ -17,9 +16,7 @@ import {
   ToastAndroid,
   RefreshControl
 } from 'react-native';
-import * as utility from "../../common/utility";
-import Orientation from 'react-native-orientation';
-import * as filmDetailActions from "../../actions/component/film_detail_actions";
+import * as filmDetailActions from "../../store/actions/containers/film_detail_actions";
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 
 class FilmDetail extends Component {

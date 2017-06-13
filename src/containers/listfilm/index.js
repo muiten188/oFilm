@@ -16,8 +16,7 @@ import {
   BackAndroid,
   ToastAndroid
 } from 'react-native';
-import * as utility from "../../common/utility";
-import * as listFilmActions from "../../actions/component/listfilm_actions";
+import * as listFilmActions from "../../store/actions/containers/listfilm_actions";
 
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 class index extends Component {
