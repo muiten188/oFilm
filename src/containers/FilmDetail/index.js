@@ -16,6 +16,7 @@ import {
   ToastAndroid,
   RefreshControl
 } from 'react-native';
+import FontAwesome,{ Icons } from 'react-native-fontawesome';
 import * as filmDetailActions from "../../store/actions/containers/film_detail_actions";
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 
@@ -54,7 +55,6 @@ class FilmDetail extends Component {
     const { oFilm } = this.props.navigation.state.params;
     const { getFilmDetail } = this.props.filmDetailActions;
     getFilmDetail(oFilm);
-    utility.timerMark();
   }
   //renders...
   buildRowEpisode(episode) {

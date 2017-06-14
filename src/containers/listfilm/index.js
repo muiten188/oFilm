@@ -5,17 +5,19 @@ import {
   AppRegistry,
   StyleSheet,
   Navigator,
-  Text,
   View,
   ListView,
   ScrollView,
   Image,
   TouchableOpacity,
-  Button,
   RefreshControl,
   BackAndroid,
   ToastAndroid
 } from 'react-native';
+
+import { Container, Content, Thumbnail, Text, Button, Grid, Row, Col } from 'native-base';
+import styles from './styles';
+import Variables from '../../common/variables';
 import * as listFilmActions from "../../store/actions/containers/listfilm_actions";
 
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
@@ -38,21 +40,25 @@ class index extends Component {
 
   }
 
-  buildRow(oData) {
+  buildRow(oData, rowID) {
     return (
-      <TouchableOpacity onPress={(e) => this.onListItemClick(oData)}>
+      <TouchableOpacity key={rowID} onPress={(e) => this.onListItemClick(oData)}>
         <View style={styles.item}>
-          <Image style={{ width: 100, height: 60, resizeMode: 'cover' }} source={{ uri: oData.PosterUrl }} />
-          <Text ellipsizeMode='tail' numberOfLines={2}>{oData.Name1}</Text>
+          <Thumbnail style={styles.image} borderRadius={Variables.ThumbnailFilm.borderRadius} source={{ uri: oData.PosterUrl }} />
+          <Text ellipsizeMode='tail' numberOfLines={Variables.TitleFilm.numberOfLines}>{oData.Name1}</Text>
         </View>
       </TouchableOpacity>
     )
   }
-
+  // <Button dark transparent style={styles.item}>
+  //       <Grid style={styles.flex}>
+  //         <Row style={styles.rowFilm}><Thumbnail style={styles.image} borderRadius={Variables.ThumbnailFilm.borderRadius} source={{ uri: oData.PosterUrl }} /></Row>
+  //         <Row style={styles.rowFilm}><Text ellipsizeMode='tail' numberOfLines={Variables.TitleFilm.numberOfLines}>{oData.Name1}</Text></Row>
+  //       </Grid>
+  //     </Button>
   onListItemClick(oData) {
     const { navigationAction } = this.props.navigation;
     navigationAction.push({ id: "FilmDetail", title: "Film Detail", oFilm: oData });
-    // props.navigator.push({ id: "FilmDetail", oFilm: oData });
   }
 
   _onRefresh() {
@@ -64,7 +70,38 @@ class index extends Component {
   render() {
     const { listFilm, isLoading } = this.props.listFilmReducers;
     return (
-      <ScrollView style={styles.scroll}
+      <Container>
+        <Content>
+          {
+            listFilm ?
+              <ListView
+                contentContainerStyle={styles.list}
+                initialListSize={listFilm.length}
+                dataSource={ds.cloneWithRows(listFilm)}
+                renderRow={(oData, sectionID, rowID, highlightRow) => this.buildRow(oData, rowID)}
+              /> :
+              null
+          }
+        </Content>
+      </Container>
+    )
+  }
+}
+
+function mapStateToProps(state, props) {
+  return {
+    listFilmReducers: state.listFilmReducers,
+  }
+};
+function mapToDispatch(dispatch) {
+  return {
+    listFilmActions: bindActionCreators(listFilmActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapToDispatch)(index);
+
+/*<ScrollView style={styles.scroll}
         refreshControl={
           <RefreshControl
             refreshing={isLoading ? true : false}
@@ -82,40 +119,8 @@ class index extends Component {
               contentContainerStyle={styles.list}
               initialListSize={listFilm.length}
               dataSource={ds.cloneWithRows(listFilm)}
-              renderRow={(oData) => this.buildRow(oData)}
+              renderRow={(oData, sectionID, rowID, highlightRow) => this.buildRow(oData, rowID)}
             /> :
             null
         }
-      </ScrollView>
-    )
-  }
-}
-var styles = StyleSheet.create({
-  scroll: {
-    margin: 10
-  },
-  list: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    flexWrap: 'wrap'
-  },
-  item: {
-    margin: 5,
-    width: 100,
-    height: 95,
-    flexDirection: 'column'
-  }
-});
-
-function mapStateToProps(state, props) {
-  return {
-    listFilmReducers: state.listFilmReducers,
-  }
-};
-function mapToDispatch(dispatch) {
-  return {
-    listFilmActions: bindActionCreators(listFilmActions, dispatch),
-  }
-}
-
-export default connect(mapStateToProps, mapToDispatch)(index);
+      </ScrollView>*/
