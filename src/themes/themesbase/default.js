@@ -16,4 +16,16 @@ export default {
     footerDefaultBg: '#FFF',
     // FooterTab
     tabBarActiveTextColor: (platform === 'ios') ? '#007aff' : 'red',
+    //refresh control
+    refreshOption: {
+        tintColor: "#ffffff",
+        title: "Loading...",
+        titleColor: "#00ff00",
+        progressBackgroundColor: "#ffffff",
+        colors:['#ff0000', '#00ff00', '#0000ff']
+    },
+    //spin 
+    spinOption:{
+        colors:['#ff0000', '#00ff00', '#0000ff']
+    }
 }

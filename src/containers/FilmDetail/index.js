@@ -2,22 +2,21 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-  StyleSheet,
   Navigator,
-  Text,
   View,
   ListView,
   ScrollView,
   Image,
   TouchableOpacity,
-  Button,
   BackAndroid,
   Platform,
   ToastAndroid,
   RefreshControl
 } from 'react-native';
-import FontAwesome,{ Icons } from 'react-native-fontawesome';
+import { Container, Content, Thumbnail, Text, Button } from 'native-base';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 import * as filmDetailActions from "../../store/actions/containers/film_detail_actions";
+import styles from './styles';
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 
 class FilmDetail extends Component {
@@ -57,9 +56,9 @@ class FilmDetail extends Component {
     getFilmDetail(oFilm);
   }
   //renders...
-  buildRowEpisode(episode) {
+  buildRowEpisode(episode, rowID) {
     return (
-      <View style={{ marginBottom: 5 }}>
+      <View key={rowID} style={{ marginBottom: 5 }}>
         <TouchableOpacity style={{
           height: 33,
           backgroundColor: '#8c1b0a',
@@ -72,22 +71,22 @@ class FilmDetail extends Component {
     )
   }
 
-  buildRowSeparator(a) {
+  buildRowSeparator(a, index) {
     return (
-      <Text style={{ marginRight: 10 }}></Text>
+      <Text key={index} style={{ marginRight: 10 }}></Text>
     )
   }
 
   renderServerFilm(serverFilm, index) {
     return (
       <View style={{ flexDirection: 'column', marginTop: 4, marginBottom: 4 }} key={index}>
-        <Text style={[styles.fullWidthItem, styles.itemMargin]}>{serverFilm.Server}</Text>
+        <Text style={Object.assign(styles.fullWidthItem, styles.itemMargin)}>{serverFilm.Server}</Text>
         <ListView
           contentContainerStyle={styles.listEpisode}
           initialListSize={serverFilm.ListFilm.length}
           dataSource={ds.cloneWithRows(serverFilm.ListFilm)}
-          renderSeparator={(a) => this.buildRowSeparator(a)}
-          renderRow={(episode) => this.buildRowEpisode(episode)}
+          renderSeparator={(a, index) => this.buildRowSeparator(a, index)}
+          renderRow={(episode, sectionID, rowID, highlightRow) => this.buildRowEpisode(episode, rowID)}
         />
       </View>
     )
@@ -96,7 +95,35 @@ class FilmDetail extends Component {
   render() {
     const { filmDetail, isLoading } = this.props.filmDetailReducers;
     return (
-      <ScrollView style={styles.scroll}
+      <Container>
+        <Content pointerEvents={isLoading || this.isFirstLoading ? "none" : "auto"} style={styles.contentDetail}>
+          <Image style={Object.assign({}, styles.fullWidthItem, styles.filmImage, styles.itemMargin)} source={{ uri: filmDetail ? filmDetail.Thumbnail : null }} />
+          <Text style={Object.assign({}, styles.fullWidthItem, styles.itemMargin)}>Phim: {filmDetail ? filmDetail.Name : null}</Text>
+          <Text style={Object.assign({}, styles.fullWidthItem, styles.itemMargin)}>Mô tả: {filmDetail ? filmDetail.Description : null}</Text>
+          {
+            filmDetail ?
+              filmDetail.ListServerFilm.map(this.renderServerFilm.bind(this))
+              : null
+          }
+        </Content>
+      </Container>
+    )
+  }
+}
+
+function mapStateToProps(state, props) {
+  return {
+    filmDetailReducers: state.filmDetailReducers,
+  }
+};
+function mapToDispatch(dispatch) {
+  return {
+    filmDetailActions: bindActionCreators(filmDetailActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapToDispatch)(FilmDetail);
+/*<ScrollView style={styles.scroll}
         refreshControl={
           <RefreshControl
             refreshing={isLoading || this.isFirstLoading ? true : false}
@@ -117,48 +144,4 @@ class FilmDetail extends Component {
               : null
           }
         </View>
-      </ScrollView>
-    )
-  }
-}
-
-var styles = StyleSheet.create({
-  itemMargin: {
-    margin: 5
-  },
-  fullWidthItem: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  filmImage: {
-    height: 450,
-    resizeMode:'contain'
-  },
-  listEpisode: {
-    margin: 5,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-  },
-  itemEpisode: {
-    margin: 25,
-    width: 30,
-    height: 15,
-    textAlign: 'center',
-    borderWidth: 1,
-    borderColor: 'blue'
-  }
-});
-function mapStateToProps(state, props) {
-  return {
-    filmDetailReducers: state.filmDetailReducers,
-  }
-};
-function mapToDispatch(dispatch) {
-  return {
-    filmDetailActions: bindActionCreators(filmDetailActions, dispatch),
-  }
-}
-
-export default connect(mapStateToProps, mapToDispatch)(FilmDetail);
+      </ScrollView>*/

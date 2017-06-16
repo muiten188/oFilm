@@ -3,7 +3,7 @@ export default {
     ThumbnailFilm: {
         borderRadius: 5,
     },
-    TitleFilm:{
-        numberOfLines:2
-    }
+    TitleFilm: {
+        numberOfLines: 2
+    },
 }

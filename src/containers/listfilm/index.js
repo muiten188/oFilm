@@ -1,25 +1,13 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {
-  AppRegistry,
-  StyleSheet,
-  Navigator,
-  View,
-  ListView,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  RefreshControl,
-  BackAndroid,
-  ToastAndroid
-} from 'react-native';
-
+import { ListView, RefreshControl } from 'react-native';
+import default_themes from '../../themes/themesbase/default';
 import { Container, Content, Thumbnail, Text, Button, Grid, Row, Col } from 'native-base';
 import styles from './styles';
 import Variables from '../../common/variables';
 import * as listFilmActions from "../../store/actions/containers/listfilm_actions";
-
+import FilmItem from './film_item';
 let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 class index extends Component {
   constructor(props) {
@@ -42,12 +30,7 @@ class index extends Component {
 
   buildRow(oData, rowID) {
     return (
-      <TouchableOpacity key={rowID} onPress={(e) => this.onListItemClick(oData)}>
-        <View style={styles.item}>
-          <Thumbnail style={styles.image} borderRadius={Variables.ThumbnailFilm.borderRadius} source={{ uri: oData.PosterUrl }} />
-          <Text ellipsizeMode='tail' numberOfLines={Variables.TitleFilm.numberOfLines}>{oData.Name1}</Text>
-        </View>
-      </TouchableOpacity>
+      <FilmItem oData={oData} rowID={rowID} onListItemClick={(oData)=>this.onListItemClick(oData)} />
     )
   }
   // <Button dark transparent style={styles.item}>
@@ -71,7 +54,15 @@ class index extends Component {
     const { listFilm, isLoading } = this.props.listFilmReducers;
     return (
       <Container>
-        <Content>
+        <Content
+          refreshControl={
+            <RefreshControl
+              style={{ backgroundColor: '#E0FFFF' }}
+              refreshing={isLoading ? true : false}
+              onRefresh={() => this._onRefresh()}
+              {...default_themes.refreshOption}
+            />}
+        >
           {
             listFilm ?
               <ListView
