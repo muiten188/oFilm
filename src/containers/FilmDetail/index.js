@@ -65,7 +65,7 @@ class FilmDetail extends Component {
           padding: 6,
           borderRadius: 3
         }} onPress={() => this.watchFilm(this, episode)}>
-          <Text style={{ color: '#ccc' }}>{episode.Episode.toString()}</Text>
+          <Text style={{ color: '#ccc' }}>{episode.Episode.toString()+"aaa"}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -96,7 +96,18 @@ class FilmDetail extends Component {
     const { filmDetail, isLoading } = this.props.filmDetailReducers;
     return (
       <Container>
-        <Content pointerEvents={isLoading || this.isFirstLoading ? "none" : "auto"} style={styles.contentDetail}>
+        <Content pointerEvents={isLoading || this.isFirstLoading ? "none" : "auto"} 
+          refreshControl={
+            <RefreshControl
+              refreshing={isLoading || this.isFirstLoading ? true : false}
+              onRefresh={() => this._onRefresh()}
+              tintColor="#ff0000"
+              title="Loading..."
+              titleColor="#00ff00"
+              colors={['#ff0000', '#00ff00', '#0000ff']}
+              progressBackgroundColor="#ffffff"
+            />}
+          style={styles.contentDetail}>
           <Image style={Object.assign({}, styles.fullWidthItem, styles.filmImage, styles.itemMargin)} source={{ uri: filmDetail ? filmDetail.Thumbnail : null }} />
           <Text style={Object.assign({}, styles.fullWidthItem, styles.itemMargin)}>Phim: {filmDetail ? filmDetail.Name : null}</Text>
           <Text style={Object.assign({}, styles.fullWidthItem, styles.itemMargin)}>Mô tả: {filmDetail ? filmDetail.Description : null}</Text>

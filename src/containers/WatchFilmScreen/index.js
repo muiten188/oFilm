@@ -21,8 +21,8 @@ import {
   ToastAndroid,
   ActivityIndicator
 } from 'react-native';
-import FilmPlayer from '../../general_component/filmplayer/ofilmplayer';
-import * as watchScreenActions from "../../actions/component/watch_screen_actions";
+import FilmPlayer from '../../components/filmplayer/ofilmplayer';
+import * as watchScreenActions from "../../store/actions/containers/watch_screen_actions";
 
 class watch extends Component {
   static navigationOptions = {

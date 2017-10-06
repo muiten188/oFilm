@@ -1,6 +1,6 @@
 import ListFilm from './ListFilm';
 import FilmDetail from './FilmDetail';
-//import WatchFilm from './WatchFilmScreen';
+import WatchFilm from './WatchFilmScreen';
 import {
     addNavigationHelpers,
     StackNavigator,
@@ -12,6 +12,7 @@ const stackNavigatorConfiguration = {
 
 export const RootNavigationContainer = StackNavigator({
     ListFilm: { screen: ListFilm },
-    FilmDetail: { screen: FilmDetail }
+    FilmDetail: { screen: FilmDetail },
+    WatchFilm: {screen:WatchFilm}
 }, stackNavigatorConfiguration)
 //    WatchFilm: { screen: WatchFilm }
